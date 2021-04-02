@@ -2,7 +2,6 @@
 #include <iostream>
 
 
-
 void PersonEmailContact::display()
 {
 	cout << "[" << typeid(*this).name() << "]\t" <<
@@ -11,6 +10,7 @@ void PersonEmailContact::display()
 		"Email: " << email << endl;
 }
 
+
 void PersonPhoneContact::display()
 {
 	cout << "[" << typeid(*this).name() << "]\t" <<
@@ -18,6 +18,7 @@ void PersonPhoneContact::display()
 		"Gender: " << gender << "  |  " <<
 		"Phone: " << phone_number << endl;
 }
+
 
 void PersonAddressContact::display()
 {
@@ -30,6 +31,7 @@ void PersonAddressContact::display()
 		"Zipcode: " << zipcode << endl;
 }
 
+
 void BusinessWebContact::display()
 {
 	cout << "[" << typeid(*this).name() << "]\t" <<
@@ -38,6 +40,7 @@ void BusinessWebContact::display()
 	"Website: " << website << endl;
 }
 
+
 void BusinessPhoneContact::display() 
 {
 	cout << "[" << typeid(*this).name() << "]\t" <<
@@ -45,6 +48,8 @@ void BusinessPhoneContact::display()
 		"Category: " << category << "  |  " <<
 		"Phone: " << phone_number << endl;
 }
+
+
 void BusinessAddressContact::display()
 {
 	cout << "[" << typeid(*this).name() << "]\t" <<
