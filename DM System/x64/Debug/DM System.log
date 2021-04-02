@@ -1,0 +1,9 @@
+﻿  Contact.cpp
+  Main.cpp
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(13,35): error C2512: 'PersonAddressContact': no appropriate default constructor available
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(14,33): error C2512: 'PersonPhoneContact': no appropriate default constructor available
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(15,33): error C2512: 'PersonEmailContact': no appropriate default constructor available
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(16,37): error C2512: 'BusinessAddressContact': no appropriate default constructor available
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(17,35): error C2512: 'BusinessPhoneContact': no appropriate default constructor available
+C:\Users\Juan\source\repos\PKmnman\DMS_Project\DM System\Main.cpp(18,33): error C2512: 'BusinessWebContact': no appropriate default constructor available
+  Generating Code...
