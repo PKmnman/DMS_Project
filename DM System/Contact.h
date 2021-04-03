@@ -113,7 +113,7 @@ public:
 
 	PhoneContact(STRING_REF phone) : phone_number(phone) {}
 
-	PhoneContact() : PhoneContact("none", 0) {}
+	PhoneContact() : PhoneContact("none", "000-000-0000") {}
 
 	virtual void display() = 0;
 
