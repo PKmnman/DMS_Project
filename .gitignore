@@ -5,5 +5,4 @@
 # Binaries
 **/bin/
 **/obj/
-/DM System/Debug
-/Debug
+**/Debug/

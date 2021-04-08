@@ -153,6 +153,7 @@ public:
 
 };
 
+
 class PersonEmailContact : public PersonContact, public EmailContact
 {
 public:
@@ -168,6 +169,7 @@ public:
 
 	PersonEmailContact() : PersonEmailContact("none", "none", "none") {}
 };
+
 
 class PersonPhoneContact : public PersonContact, public PhoneContact
 {
@@ -234,6 +236,7 @@ public:
 	
 	BusinessPhoneContact() : BusinessPhoneContact("none","none","none"){}
 };
+
 
 class BusinessAddressContact : public BusinessContact, public AddressContact
 {
