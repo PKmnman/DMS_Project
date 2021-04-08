@@ -1,6 +1,7 @@
 #include "Contact.h"
 #include <iostream>
 
+using namespace dms;
 
 void PersonEmailContact::display()
 {

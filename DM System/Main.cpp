@@ -1,5 +1,7 @@
 #include "Contact.h"
 
+using namespace dms;
+
 int main()
 {
 	Contact* test = new BusinessWebContact("Gary Inc.", "Web Development", "www.pkstudios.com");
