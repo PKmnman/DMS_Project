@@ -19,7 +19,7 @@ namespace dms
 		// Storage for contacts
 
 		// Map of available queries
-	
+		
 
 	public:
 
