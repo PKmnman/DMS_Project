@@ -2,7 +2,11 @@
 .vs/
 **.vcxproj.user
 
+*.tlog/
+
 # Binaries
 **/bin/
 **/obj/
-**/Debug/
+**/int/
+**/Debug/*
+**/x64/*

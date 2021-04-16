@@ -15,33 +15,33 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Contact.h">
+    <ClInclude Include="src\headers\Contact.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Menu.h">
+    <ClInclude Include="src\headers\DMS.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="DMS.h">
+    <ClInclude Include="src\headers\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="phone_num.h">
+    <ClInclude Include="src\headers\Query.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Query.h">
+    <ClInclude Include="src\headers\phone_num.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Contact.cpp">
+    <ClCompile Include="src\Contact.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
+    <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="phone_num.cpp">
+    <ClCompile Include="src\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Menu.cpp">
+    <ClCompile Include="src\phone_num.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
