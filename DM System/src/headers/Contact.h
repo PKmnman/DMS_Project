@@ -69,7 +69,7 @@ namespace dms
 	};
 
 
-	class AddressContact : virtual public Contact
+	class AddressInfo
 	{
 	protected:
 
@@ -80,7 +80,7 @@ namespace dms
 
 	public:
 	
-		AddressContact(STRING_REF name, STRING_REF street_address, STRING_REF district, STRING_REF state, STRING_REF zipcode) : Contact(name)
+		AddressInfo(STRING_REF name, STRING_REF street_address, STRING_REF district, STRING_REF state, STRING_REF zipcode)
 		{
 			this->street_address = street_address;
 			this->district = district;
@@ -88,7 +88,7 @@ namespace dms
 			this->zipcode = zipcode;
 		}
 
-		AddressContact(STRING_REF street, STRING_REF district, STRING_REF state, STRING_REF zipcode) 
+		AddressInfo(STRING_REF street, STRING_REF district, STRING_REF state, STRING_REF zipcode) 
 		{
 			this->street_address = street;
 			this->district = district;
@@ -96,14 +96,14 @@ namespace dms
 			this->zipcode = zipcode;
 		}
 	
-		AddressContact() : AddressContact("none","none","none","none","none") {}
+		AddressInfo() : AddressInfo("none","none","none","none","none") {}
 	
 		virtual void display() = 0;
 
 	};
 
 
-	class PhoneContact : virtual public Contact
+	class PhoneInfo
 	{
 	protected:
 
@@ -111,18 +111,18 @@ namespace dms
 
 	public:
 
-		PhoneContact(STRING_REF fullname, STRING_REF phone) : Contact(fullname), phone_number(phone) {}
+		PhoneInfo(STRING_REF fullname, STRING_REF phone) : phone_number(phone) {}
 
-		PhoneContact(STRING_REF phone) : phone_number(phone) {}
+		PhoneInfo(STRING_REF phone) : phone_number(phone) {}
 
-		PhoneContact() : PhoneContact("none", "000-000-0000") {}
+		PhoneInfo() : PhoneInfo("none", "000-000-0000") {}
 
 		virtual void display() = 0;
 
 	};
 
 
-	class EmailContact : virtual public Contact
+	class EmailInfo
 	{
 	protected:
 
@@ -130,16 +130,16 @@ namespace dms
 
 	public:
 
-		EmailContact(STRING_REF fullname, STRING_REF email) : Contact(fullname), email(email) {}
+		EmailInfo(STRING_REF fullname, STRING_REF email) : email(email) {}
 
-		EmailContact() : EmailContact("none", "none") {}
+		EmailInfo() : EmailInfo("none", "none") {}
 
 		virtual void display() = 0;
 
 	};
 
 
-	class WebContact : virtual public Contact
+	class WebInfo
 	{
 	protected:
 	
@@ -147,16 +147,16 @@ namespace dms
 
 	public:
 
-		WebContact(STRING_REF fullname, STRING_REF url) : Contact(fullname),  website(url) {}
+		WebInfo(STRING_REF fullname, STRING_REF url) : website(url) {}
 
-		WebContact() : WebContact("none", "none") {}
+		WebInfo() : WebInfo("none", "none") {}
 
 		virtual void display() = 0;
 
 	};
 
 
-	class PersonEmailContact : public PersonContact, public EmailContact
+	class PersonEmailContact : public PersonContact, public EmailInfo
 	{
 	public:
 
@@ -173,11 +173,11 @@ namespace dms
 	};
 
 
-	class PersonPhoneContact : public PersonContact, public PhoneContact
+	class PersonPhoneContact : public PersonContact, public PhoneInfo
 	{
 	public:
 	
-		PersonPhoneContact(STRING_REF fullname, STRING_REF gender, STRING_REF phone) : PersonContact(gender), PhoneContact(phone), Contact(fullname) {}
+		PersonPhoneContact(STRING_REF fullname, STRING_REF gender, STRING_REF phone) : PersonContact(gender), PhoneInfo(phone), Contact(fullname) {}
 
 		virtual void display();
 
@@ -186,7 +186,7 @@ namespace dms
 
 
 
-	class PersonAddressContact : public PersonContact, public AddressContact
+	class PersonAddressContact : public PersonContact, public AddressInfo
 	{
 	public:
 
@@ -206,7 +206,7 @@ namespace dms
 	};
 
 
-	class BusinessWebContact : public BusinessContact, public WebContact
+	class BusinessWebContact : public BusinessContact, public WebInfo
 	{
 	public:
 	
@@ -223,7 +223,7 @@ namespace dms
 	};
 
 
-	class BusinessPhoneContact : public BusinessContact, public PhoneContact
+	class BusinessPhoneContact : public BusinessContact, public PhoneInfo
 	{
 	public:
 
@@ -240,7 +240,7 @@ namespace dms
 	};
 
 
-	class BusinessAddressContact : public BusinessContact, public AddressContact
+	class BusinessAddressContact : public BusinessContact, public AddressInfo
 	{
 	public:
 
