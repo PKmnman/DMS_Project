@@ -1,6 +1,8 @@
 #include "Contact.h"
 #include <fstream>
 
+using namespace dms;
+
 int main()
 {
 	Contact* test = new BusinessWebContact("Gary Inc.", "Web Development", "www.pkstudios.com");
