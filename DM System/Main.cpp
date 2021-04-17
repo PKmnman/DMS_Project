@@ -1,4 +1,5 @@
 #include "Contact.h"
+#include <fstream>
 
 int main()
 {
