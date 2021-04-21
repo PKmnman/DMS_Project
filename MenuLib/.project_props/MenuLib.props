@@ -3,12 +3,11 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <OutDir>$(SolutionDir)out\bin\$(ProjectName)\$(Configuration)-$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)out\obj\$(ProjectName)\$(Configuration)-$(Platform)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(ProjectName)\$(Configuration)-$(Platform)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(ProjectName)\$(Configuration)-$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <ClCompile>
-      <CompileAs>CompileAsCpp</CompileAs>
       <AdditionalIncludeDirectories>$(SolutionDir)$(ProjectName)\src\headers</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
