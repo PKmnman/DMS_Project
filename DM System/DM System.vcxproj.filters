@@ -24,12 +24,6 @@
     <ClInclude Include="src\headers\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Query.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\headers\phone_num.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Contact.cpp">
@@ -41,7 +35,7 @@
     <ClCompile Include="src\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\phone_num.cpp">
+    <ClCompile Include="src\DMS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

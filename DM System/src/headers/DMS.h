@@ -21,6 +21,8 @@ namespace dms
 
 		map<string, Query*> queries;
 
+		vector<Contact*> contacts;
+		
 		DMS() = default;
 
 	public:
@@ -40,9 +42,14 @@ namespace dms
 			}
 		}
 		
+		void addContact(Contact& contact);
+
+		void removeContact(string& name);
+
+		map<string&, int> search();
 		
 		// Function to register a query to the DMS
-		void registerQuery(Query* const query_func);
+		void registerQuery(string& key, Query* const query_func);
 		
 		// Fuction to load contact data from file
 		void loadData(const string& filepath);
