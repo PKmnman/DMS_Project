@@ -4,7 +4,6 @@
 #include <string>
 
 #include <functional>
-#include <varargs.h>
 
 #include "Contact.h"
 
@@ -51,7 +50,7 @@ namespace dms
 		// Function to register a query to the DMS
 		void registerQuery(string& key, Query* const query_func);
 		
-		// Fuction to load contact data from file
+		// Function to load contact data from file
 		void loadData(const string& filepath);
 	};
 
