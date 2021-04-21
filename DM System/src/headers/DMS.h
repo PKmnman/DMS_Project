@@ -12,6 +12,8 @@ namespace dms
 {
 	using namespace std;
 
+	using namespace contact;
+
 	class Query;
 	
 	class DMS
