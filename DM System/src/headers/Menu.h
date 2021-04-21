@@ -2,15 +2,48 @@
 #include <vector>
 #include <string>
 #include <functional>
-#include <concepts>
-#include <map>
+#include <stack>
 
 namespace menu
 {
 	using namespace std;
 	
+	class MenuController;
+
+	class MenuNode
+	{
+		MenuNode* parent;
+		vector<MenuNode*> child_nodes;
+
+		string id;
+	
+	protected:
+
+		MenuNode(const string& id, MenuNode* parent, MenuNode& children...);
+
+		MenuNode(const string& id);
+
+		MenuNode();
+
+	public:
+
+		MenuNode(const MenuNode& menu_node);
+
+		const string& getId() const;
+
+		MenuNode* getParent();
+
+		virtual void onSelect() {}
+
+		virtual operator string();
+		
+	};
+
+	
 	class MenuOption
 	{
+	protected:
+		
 		string option_text;
 
 		function<void ()>* onSelHandler = nullptr;
@@ -25,7 +58,7 @@ namespace menu
 		
 		const string& getText() const { return option_text; }
 
-		void onSelect();
+		virtual void onSelect();
 
 		MenuOption& operator =(const MenuOption& other);
 	};
@@ -35,13 +68,12 @@ namespace menu
 	{
 	protected:
 
-		vector<MenuOption*> menu_options; // Should probs use smart pointers for this
 		string menu_title;
-
+		vector<MenuOption*> menu_options;
+		
 		// Optional pointer to a parent menu
 		const Menu* parent_menu = nullptr;
-
-		const unsigned long menu_id = 0;
+		MenuController* controller;
 
 	public:
 
@@ -49,19 +81,41 @@ namespace menu
 
 		explicit Menu(const string& title);
 
-		Menu(const Menu& parent, const string& title);
+		Menu(MenuController& controller, const Menu& parent, const string& title);
+
+		Menu(MenuController& controller, const string& title);
 
 		void addOption(MenuOption& option);
-
 		void removeOption(unsigned int index);
 
 		const string& getTitle() const { return menu_title; }
-
 		void setTitle(const string&);
 
-		// This function simply prints out the menu to the console
-		void display();
+		MenuController& getController() const;
+		void setController(MenuController& new_controller);
+		
 
+	};
+	
+
+	class MenuController
+	{
+	private:
+
+		stack<Menu*> menu_history;
+
+		Menu* currentMenu;
+
+	public:
+
+		// Constructors
+		
+		MenuController();
+
+		// Functions
+
+		void switchMenu(Menu&);
+		
 	};
 }
 

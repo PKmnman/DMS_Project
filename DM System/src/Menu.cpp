@@ -40,10 +40,11 @@ menu::Menu::Menu(const string& title)
 	this->menu_title = title;
 }
 
-menu::Menu::Menu(const Menu& parent, const string& title)
+menu::Menu::Menu(MenuController& controller, const Menu& parent, const string& title)
 {
 	this->parent_menu = parent_menu;
 	this->menu_title = title;
+	this->controller = &controller;
 }
 
 void menu::Menu::addOption(MenuOption& option)
