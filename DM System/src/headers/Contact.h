@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <regex>
 
 namespace dms 
 {
@@ -9,6 +10,7 @@ namespace dms
 
 	namespace contact
 	{
+		
 		class Contact
 		{
 		protected:
@@ -20,9 +22,11 @@ namespace dms
 			Contact(CSZREF fullname) : name(fullname) {}
 			Contact() : Contact("none") {}
 
+			virtual ~Contact() = default;
+
 			virtual void display() = 0;
 
-			const string& getName() { return name; }
+			const string& getName() const { return name; }
 			void setName(CSZREF newName) { name = newName; }
 		};
 
@@ -44,7 +48,8 @@ namespace dms
 	
 			virtual void display() = 0;
 
-			const string& getCategory() { return category; }
+			const string& getCategory() const { return category; }
+			void setCategory(CSZREF new_category) { category = new_category; }
 
 		};
 
@@ -63,10 +68,12 @@ namespace dms
 			}
 
 			PersonContact(CSZREF gender) : gender(gender) {}
-
 			PersonContact() : PersonContact("none", "none") {}
 
 			virtual void display() = 0;
+
+			CSZREF getGender() const { return gender; }
+			void setGender(CSZREF value) { gender = value; }
 
 		};
 
@@ -99,28 +106,46 @@ namespace dms
 			}
 	
 			AddressInfo() : AddressInfo("none","none","none","none","none") {}
-	
+
+			virtual ~AddressInfo() = default;
+			
 			virtual void display() = 0;
 
 		};
-
-
+		
 		class PhoneInfo
 		{
 		protected:
 
 			string phone_number;
 
+			int country_code;
+			int area_code;
+			int exchange_code;
+			int line_number;
+
+			
+
 		public:
 
-			PhoneInfo(CSZREF fullname, CSZREF phone) : phone_number(phone) {}
+			inline static const regex PHONE_EXPR = regex(R"(^(\d{1,3})-(\d{3})-(\d{3})-(\d{4})$)");
 
-			PhoneInfo(CSZREF phone) : phone_number(phone) {}
+			PhoneInfo(CSZREF phone);
+			PhoneInfo() : PhoneInfo("1-200-200-0000") {}
 
-			PhoneInfo() : PhoneInfo("none", "000-000-0000") {}
-
+			virtual ~PhoneInfo() = default;
+			
 			virtual void display() = 0;
 
+			int getCountryCode() const { return country_code; }
+
+			int getAreaCode() const { return area_code; }
+
+			int getExchangeCode() const { return exchange_code; }
+
+			int getLineNumber() const { return line_number; }
+
+			bool setPhoneNumber(CSZREF phone);
 		};
 
 
@@ -128,15 +153,21 @@ namespace dms
 		{
 		protected:
 
-			string email;
+			string address;
+
+			string domain;
 
 		public:
 
-			EmailInfo(CSZREF fullname, CSZREF email) : email(email) {}
+			inline static const regex EMAIL_EXPR = regex(R"((\w+(?:[.-_]\w+)?)@(\w+((?:.\w+)+)))");
 
-			EmailInfo() : EmailInfo("none", "none") {}
+			EmailInfo(CSZREF email);
+
+			EmailInfo() : EmailInfo("none") {}
 
 			virtual void display() = 0;
+
+			const string& getAddress() { return address; }
 
 		};
 
@@ -166,7 +197,7 @@ namespace dms
 			{
 				this->name = fullname;
 				this->gender = gender;
-				this->email = email;
+				this->address = email;
 			}
 
 			virtual void display();
@@ -260,6 +291,19 @@ namespace dms
 
 			BusinessAddressContact() : BusinessAddressContact("none", "none", "none", "none", "none", "none") {}
 		};
+
+		typedef Contact contact_t, *contactp_t;
+
+		typedef PersonPhoneContact phone_pcontact;
+		typedef BusinessPhoneContact phone_bcontact;
+		
+		typedef PersonAddressContact address_pcontact;
+		typedef BusinessAddressContact address_bcontact;
+
+		typedef PersonEmailContact email_contact;
+		typedef BusinessWebContact web_contact;
+
+		
 	}
 }
 
