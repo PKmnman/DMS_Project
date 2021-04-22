@@ -2,18 +2,32 @@
 #include <map>
 #include <vector>
 #include <string>
-
+#include <regex>
 #include <functional>
 
 #include "Contact.h"
 
-// TODO: Part 2 - Designing the DMS System
+
 namespace dms
 {
 	using namespace std;
 
 	using namespace contact;
 
+	// Compile-time constants for file reading
+	
+	constexpr unsigned int NAME_FIELD = 1;
+	constexpr unsigned int GENDER_FIELD = 2;
+	constexpr unsigned int PHONE_FIELD = 3;
+	constexpr unsigned int EMAIL_FIELD = 4;
+
+	consteval unsigned int LADDRESS_FIELD = 5;
+	consteval unsigned int SADDRESS_FIELD = 6;
+
+	constexpr unsigned int DISTRICT_FIELD = 7;
+	constexpr unsigned int STATE_FIELD = 8;
+	constexpr unsigned int ZIPCODE_FIELD = 9;
+	
 	class Query;
 	
 	class DMS
@@ -51,7 +65,8 @@ namespace dms
 		
 		// Function to register a query to the DMS
 		void registerQuery(string& key, Query* const query_func);
-		
+		void addPersonalContact(std::string contact);
+
 		// Function to load contact data from file
 		void loadData(const string& filepath);
 	};
