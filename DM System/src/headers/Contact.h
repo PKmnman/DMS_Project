@@ -119,12 +119,12 @@ namespace dms
 
 			string phone_number;
 
+			// More specific fields for queries
+			
 			int country_code;
 			int area_code;
 			int exchange_code;
 			int line_number;
-
-			
 
 		public:
 
@@ -162,12 +162,15 @@ namespace dms
 			inline static const regex EMAIL_EXPR = regex(R"((\w+(?:[.-_]\w+)?)@(\w+((?:.\w+)+)))");
 
 			EmailInfo(CSZREF email);
-
 			EmailInfo() : EmailInfo("none") {}
+
+			virtual ~EmailInfo() = default;
 
 			virtual void display() = 0;
 
-			const string& getAddress() { return address; }
+			const string& getAddress() const { return address; }
+
+			void setAddress(const string& email);
 
 		};
 
@@ -180,12 +183,14 @@ namespace dms
 
 		public:
 
-			WebInfo(CSZREF fullname, CSZREF url) : website(url) {}
+			WebInfo(CSZREF url) : website(url) {}
 
-			WebInfo() : WebInfo("none", "none") {}
+			WebInfo() : WebInfo("none") {}
 
 			virtual void display() = 0;
 
+			const string& getWebAddress() const { return website; }
+			
 		};
 
 

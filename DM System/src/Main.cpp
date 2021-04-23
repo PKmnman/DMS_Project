@@ -2,6 +2,7 @@
 #include <fstream>
 
 using namespace dms;
+using namespace dms::contact;
 
 int main()
 {

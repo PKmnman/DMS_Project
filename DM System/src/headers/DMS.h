@@ -21,8 +21,8 @@ namespace dms
 	constexpr unsigned int PHONE_FIELD = 3;
 	constexpr unsigned int EMAIL_FIELD = 4;
 
-	consteval unsigned int LADDRESS_FIELD = 5;
-	consteval unsigned int SADDRESS_FIELD = 6;
+	constexpr unsigned int LADDRESS_FIELD = 5;
+	constexpr unsigned int SADDRESS_FIELD = 6;
 
 	constexpr unsigned int DISTRICT_FIELD = 7;
 	constexpr unsigned int STATE_FIELD = 8;

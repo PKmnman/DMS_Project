@@ -54,8 +54,22 @@ namespace dms::contact
 		if(smatch results; regex_match(email, results, EMAIL_EXPR))
 		{
 			address = email;
-			domain = results[2];
+			domain = results[3];
 			
+		}
+		else
+		{
+			throw exception("Invalid email!!!");
+		}
+	}
+
+	
+	void EmailInfo::setAddress(const string& email)
+	{
+		if (smatch results; regex_match(email, results, EMAIL_EXPR))
+		{
+			address = email;
+			domain = results[3];
 		}
 	}
 
