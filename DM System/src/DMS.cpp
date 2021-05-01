@@ -74,24 +74,29 @@ void dms::DMS::loadData(const string& filepath)
 	const string contactType = fileDesc.substr(comma_pos + 1);
 	
 	
-	switch(contactType) {
-		case "person":
-			string contact;
+	if (contactType == "person") {
+		string contact;
 
-			while (file.good()) {
-				// Grab a line of input
-				getline(file, contact);
+		while (file.good()) {
+			// Grab a line of input
+			getline(file, contact);
 
-				// Add a Personal Contact to the DMS
-				addPersonalContact(contact);
-			}
-			break;
+			// Add a Personal Contact to the DMS
+			addPersonalContact(contact);
+		}
+	}
+	else if (contactType == "business") {
+		string contact;
+		while (file.good()) {
+			// Grab a line of input
+			getline(file, contact);
 
-		case "business":
-			break;
-
-		default:
-			throw exception("Unrecognized input format!!");
+			// Add a Personal Contact to the DMS
+			addBusinessContact(contact);
+		}
+	}
+	else{
+		throw exception("Unrecognized input format!!");
 	
 
 	}
