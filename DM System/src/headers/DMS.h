@@ -38,10 +38,11 @@ namespace dms
 
 		vector<Contact*> contacts;
 		
-		DMS() = default;
+		
 
 	public:
 
+		DMS() = default;
 		static DMS& getDMS()
 		{
 			static DMS* dms;
