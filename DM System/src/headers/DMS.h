@@ -67,6 +67,7 @@ namespace dms
 		// Function to register a query to the DMS
 		void registerQuery(string& key, Query* const query_func);
 		void addPersonalContact(std::string contact);
+		void addBusinessContact(std::string contact);
 
 		// Function to load contact data from file
 		void loadData(const string& filepath);
@@ -79,6 +80,8 @@ namespace dms
 	public:
 
 		virtual vector<Contact*> operator ()(DMS& target);
+		
+		string getQuery() {return string();}
 
 	};
 

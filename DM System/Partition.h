@@ -1,30 +1,32 @@
 #pragma once
 #include "DMS.h"
 #include <string>
+#include <queue>
 
 using namespace dms;
 using namespace std;
 class Partition
 {
 protected:
-	//partition needs to have a query and a server_num holding the query and how much processing time it takes i think
-	DMS dms;
+	//partition needs to have a query and a server_num as the Partitions parameters
 	Query* query;
 	int server_num;
 	Partition* nextp;
 	
-	Partition() = default;
-
+	
 public:
+	
+	Partition(int server_num, Query* query) {
+		this->server_num = server_num;
+		this->query = query;
+	}
 	string getPartition() { 
-		cout << server_num << query.getQuery();
+		cout << server_num << query.getQuery() << endl;
 		
 	}
 	void getServer();
-	void getQuery();
+	string getQuery() { cout << query << endl; }
 	void ServerPing(int server_num);
-	void addPartition(int server_num, Query query);
-
 
 };
 
@@ -32,7 +34,7 @@ class TimingWheel
 {
 protected:	
 	//max_delay(max processing time of query);
-	
+	queue<Partition*> queue;
 	static const int max_delay = 6;
 	Partition** server;
 	int server_size = sizeof(server) / sizeof(server[0]);
@@ -46,19 +48,9 @@ public:
 			server[i] = nullptr;
 		}
 	}
-	void insert(int processing_time, int server_num, Query q);
-	void schedule(DMS& dms, int server[10]);
+	void insert(int processing_time, int server_num, Partition* p);
+	void schedule(DMS& dms);
 	void clear_curr_slot();
 	size_t nextIndex(int current_slot, int server_size);
 	size_t ServerPing(int current_slot);
-};
-class Timer
-{
-	TimingWheel();
-	vector<Timer*> slots;
-	Timer* addtimer();
-	void deltimer();
-	void tick();
-	
-
 };

@@ -5,6 +5,8 @@
 #include <sstream>
 #include <regex>
 
+using namespace std;
+
 void dms::DMS::addContact(Contact& contact)
 {
 	contacts.push_back(&contact);
@@ -91,7 +93,7 @@ void dms::DMS::loadData(const string& filepath)
 			// Grab a line of input
 			getline(file, contact);
 
-			// Add a Personal Contact to the DMS
+			// Add a Business Contact to the DMS
 			addBusinessContact(contact);
 		}
 	}
@@ -102,3 +104,5 @@ void dms::DMS::loadData(const string& filepath)
 	}
 
 }
+
+
