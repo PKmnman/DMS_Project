@@ -4,6 +4,7 @@
 #include <string>
 #include <sstream>
 #include <regex>
+#include <iostream>
 
 using namespace std;
 
@@ -51,6 +52,15 @@ void dms::DMS::addPersonalContact(std::string contact)
 			name, gender, match[LADDRESS_FIELD].matched ? match[LADDRESS_FIELD] : match[SADDRESS_FIELD],
 			match[DISTRICT_FIELD], match[STATE_FIELD], match[ZIPCODE_FIELD]
 		));
+	}
+}
+
+void dms::DMS::displayQuery()
+{
+	for (map<string,Query*>::const_iterator i = queries.begin();
+		i != queries.end(); i++) 
+	{
+		cout << i->first << " : " << i->second << endl;
 	}
 }
 
