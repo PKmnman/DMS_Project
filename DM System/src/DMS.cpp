@@ -1,20 +1,28 @@
 #include "DMS.h"
 #include <fstream>
 #include <algorithm>
+#include <ranges>
 #include <string>
 #include <sstream>
 #include <regex>
 #include <iostream>
 
 using namespace std;
+using namespace dms;
 
-void dms::DMS::addContact(Contact& contact)
+void DMS::init()
+{
+	this->registerQuery("display", new DisplayQuery())
+}
+
+
+void DMS::addContact(Contact& contact)
 {
 	contacts.push_back(&contact);
 }
 
 
-void dms::DMS::removeContact(string& name)
+void DMS::removeContact(string& name)
 {
 	ranges::remove_if(contacts, [&name](Contact* ptr) -> bool
 	{
@@ -23,19 +31,19 @@ void dms::DMS::removeContact(string& name)
 }
 
 
-std::map<std::string&, int> dms::DMS::search()
+std::map<std::string&, int> dms::DMS::searchNumJohn()
 {
-	// TODO: Implement search query
+	this->contacts
 }
 
 
-void dms::DMS::registerQuery(string& key, Query* const query_func)
+void DMS::registerQuery(string& key, Query* const query_func)
 {
 	queries.insert_or_assign(key, query_func);
 }
 
 
-void dms::DMS::addPersonalContact(std::string contact)
+void DMS::addPersonalContact(std::string contact)
 {
 	const regex personal_capture = regex(R"(^([^,]+?),(.+?),(.+?),(.+?),(?:(?:"([^"]+?)["])|([^"]+?)),(.+?),(.+?),(\d+)$)");
 			
@@ -55,17 +63,18 @@ void dms::DMS::addPersonalContact(std::string contact)
 	}
 }
 
-void dms::DMS::displayQuery()
-{
-	for (map<string,Query*>::const_iterator i = queries.begin();
-		i != queries.end(); i++) 
-	{
-		cout << i->first << " : " << i->second << endl;
-	}
-}
+//Query dms::DMS::displayQuery()
+//{
+//	for (map<string,Query*>::const_iterator i = queries.begin();
+//		i != queries.end(); i++) 
+//	{
+//		cout << i->first << " : " << i->second << endl;
+//		return i->first, i->second;
+//	}
+//}
 
 
-void dms::DMS::loadData(const string& filepath)
+void DMS::loadData(const string& filepath)
 {
 	// Open file
 	ifstream file(filepath, ios::in);
@@ -115,4 +124,21 @@ void dms::DMS::loadData(const string& filepath)
 
 }
 
+vector<Contact*> DisplayQuery::operator()()
+{
+	for(auto contact : DMS::getDMS().getContacts())
+	{
+		if(contact->getName() == target)
+		{
+			contact->display();
 
+			return { contact };
+		}
+	}
+
+	cout << "Contact not found!!" << endl;
+
+	return {nullptr}
+}
+
+DisplayQuery displayQ = DisplayQuery("Sandra")

@@ -2,66 +2,35 @@
 #include <algorithm>
 #include <functional>
 
-menu::MenuOption::MenuOption(const MenuOption& other)
-{
-	this->onSelHandler = other.onSelHandler;
-	this->option_text = other.option_text;
-}
+using namespace menu;
+using namespace std;
 
-void menu::MenuOption::setOnSelect(function<void()> func)
-{
-	onSelHandler = &func;
-}
-
-
-void menu::MenuOption::onSelect()
-{
-	if(onSelHandler)
-	{
-		(*onSelHandler)();
-	}
-}
-
-menu::MenuOption& menu::MenuOption::operator=(const MenuOption& other)
-{
-	if(this == &other)
-	{
-		return *this;
-	}
-	
-	this->onSelHandler = other.onSelHandler;
-	this->option_text = other.option_text;
-
-	return *this;
-}
-
-menu::Menu::Menu(const string& title)
+Menu::Menu(const string& title)
 {
 	this->menu_title = title;
 }
 
-menu::Menu::Menu(MenuController& controller, const Menu& parent, const string& title)
+void menu::Menu::select(const string& option)
 {
-	this->parent_menu = parent_menu;
-	this->menu_title = title;
-	this->controller = &controller;
-}
-
-void menu::Menu::addOption(MenuOption& option)
-{
-	this->menu_options.push_back(&option);
-}
-
-void menu::Menu::removeOption(unsigned int index)
-{
-	if(!menu_options.empty() && index < menu_options.size())
+	if (options.contains(option))
 	{
-		// Set the pointer to null
-		menu_options[index] = nullptr;
-		// Remove the pointer from the vector
-		ranges::remove_if(menu_options, [](MenuOption* a) { return a == nullptr; });
+		auto func = options.at(option);
+		// Call option function
+		return func();
 	}
-	
+	// Should throw an exception if the option doesn't exist
+}
+
+
+void Menu::addOption(const string& key, void (*action)())
+{
+	options.insert_or_assign(key, action);
+}
+
+
+void Menu::removeOption(const string& key)
+{
+	if(options.contains(key)) options.erase(key);
 }
 
 void menu::Menu::setTitle(const string& newTitle)

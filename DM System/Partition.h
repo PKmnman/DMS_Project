@@ -2,7 +2,7 @@
 #include "DMS.h"
 #include <string>
 #include <queue>
-
+#include <iostream>
 using namespace dms;
 using namespace std;
 class Partition
@@ -34,7 +34,7 @@ class TimingWheel
 {
 protected:	
 	//max_delay(max processing time of query);
-	queue<Partition*> queue;
+	queue<Query*> queue;
 	static const int max_delay = 6;
 	Partition** server;
 	int server_size = sizeof(server) / sizeof(server[0]);
@@ -50,7 +50,7 @@ public:
 	}
 	void insert(int processing_time, int server_num, Partition* p);
 	void schedule(DMS& dms);
-	void clear_curr_slot();
+	void clear_curr_slot(int current_slot);
 	size_t nextIndex(int current_slot, int server_size);
 	size_t ServerPing(int current_slot);
 };

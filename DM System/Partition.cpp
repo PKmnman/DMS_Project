@@ -33,8 +33,8 @@ size_t TimingWheel::nextIndex(int current_slot, int server_size)
 
 void TimingWheel::schedule(DMS& dms) {
 
-	//while(dms.hasQueries){
-		Partition* q = dms.getQuery();
+	//make function fillQueue with partitions
+	Query* q = dms.getQuery();
 		queue.push(q);
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty
 		while(queue.front()) {
@@ -45,6 +45,9 @@ void TimingWheel::schedule(DMS& dms) {
 					insert(10, int(current_slot), q);
 					queue.pop();
 				}
+				/*if (ServerPing(current_slot) is full after first loop{
+					clear_curr_slot(current_slot);
+				}*/
 				if (queue.front() = nullptr)
 				{
 					break;
@@ -62,9 +65,10 @@ void TimingWheel::insert(int processing_time, int server_num, Partition* q)
 
 	std::this_thread::sleep_for(chrono::milliseconds(processing_time));
 	cout << "Partition pushed to server: " + server_num << endl;
+
 	
 }
-void TimingWheel::clear_curr_slot() 
+void TimingWheel::clear_curr_slot(int current_slot) 
 {
 	//the slot gets freed up of the Query object
 	server[current_slot] = nullptr;

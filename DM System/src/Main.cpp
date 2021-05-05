@@ -1,4 +1,6 @@
 #include "Contact.h"
+#include "DMS.h"
+#include "Partition.h"
 #include <fstream>
 
 using namespace dms;
@@ -6,7 +8,7 @@ using namespace dms::contact;
 
 int main()
 {
-	Contact* test = new BusinessWebContact("Gary Inc.", "Web Development", "www.pkstudios.com");
+	/*Contact* test = new BusinessWebContact("Gary Inc.", "Web Development", "www.pkstudios.com");
 	test->display();
 
 	Contact* phoneperson = new PersonPhoneContact("Gary Reeves", "Non-Binary", "12037367606");
@@ -26,5 +28,9 @@ int main()
 
 		dir[i]->display();
 
-	}
+	}*/
+	DMS dms;
+	dms = DMS::getDMS();
+	//DMS::getDMS();
+	dms.loadData("input.txt");
 }

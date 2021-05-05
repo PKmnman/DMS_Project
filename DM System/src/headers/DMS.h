@@ -1,4 +1,6 @@
-#pragma once
+#ifndef DMS_H
+#define DMS_H
+
 #include <map>
 #include <vector>
 #include <string>
@@ -38,7 +40,7 @@ namespace dms
 
 		vector<Contact*> contacts;
 		
-		
+		void init();
 
 	public:
 
@@ -62,24 +64,32 @@ namespace dms
 
 		void removeContact(string& name);
 
-		map<string&, int> search();
+		map<string&, int> searchNumJohn();
 		
 		// Function to register a query to the DMS
 		void registerQuery(string& key, Query* const query_func);
+
 		void addPersonalContact(std::string contact);
 		void addBusinessContact(std::string contact);
-		void displayQuery();
+		
 		// Function to load contact data from file
 		void loadData(const string& filepath);
+
+		const vector<Contact*> getContacts() const { return contacts; }
+
+		Query* getQuery();
 	};
 
 	
 	class Query
 	{
-		
+		protected string name;
+
+		Query(const string& name) : name(name) {};
+
 	public:
 
-		virtual vector<Contact*> operator ()(DMS& target);
+		virtual vector<Contact*> operator ()();
 		
 		string getQuery(){return string();}
 
@@ -89,13 +99,29 @@ namespace dms
 	class SearchQuery : public Query
 	{
 	public:
-		virtual vector<Contact*> operator()(DMS& target) override;
+
+		virtual vector<Contact*> operator()() override;
 	};
 
 	
 	class DisplayQuery : public Query
 	{
+
+		string target;
+
 	public:
-		virtual vector<Contact*> operator()(DMS& target) override;
+
+		DisplayQuery() : Query("Display") {}
+
+		DisplayQuery(const string& target) : Query("Display")
+		{
+			this->target = target;
+		}
+
+		virtual vector<Contact*> operator()() override;
+
+		void setTarget(const string& newTarget) {  }
 	};
 }
+
+#endif

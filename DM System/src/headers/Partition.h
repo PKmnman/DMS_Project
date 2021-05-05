@@ -14,7 +14,6 @@ private:
 	Partition* nextp;
 	Partition() {
 		nextp;
-		DisplayQuery(Query)
 	}
 
 public:
