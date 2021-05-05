@@ -12,7 +12,7 @@ using namespace dms;
 
 void DMS::init()
 {
-	this->registerQuery("display", new DisplayQuery())
+	this->registerQuery("display", new DisplayQuery());
 }
 
 
@@ -37,7 +37,7 @@ std::map<std::string&, int> dms::DMS::searchNumJohn()
 }
 
 
-void DMS::registerQuery(string& key, Query* const query_func)
+void DMS::registerQuery(const string& key, Query* const query_func)
 {
 	queries.insert_or_assign(key, query_func);
 }
@@ -118,8 +118,6 @@ void DMS::loadData(const string& filepath)
 	}
 	else{
 		throw exception("Unrecognized input format!!");
-	
-
 	}
 
 }
@@ -138,7 +136,5 @@ vector<Contact*> DisplayQuery::operator()()
 
 	cout << "Contact not found!!" << endl;
 
-	return { nullptr };
+	return {nullptr}
 }
-
-DisplayQuery displayQ = DisplayQuery("Sandra")
