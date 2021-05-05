@@ -67,7 +67,19 @@ namespace dms
 		map<string&, int> searchNumJohn();
 		
 		// Function to register a query to the DMS
-		void registerQuery(string& key, Query* const query_func);
+		void registerQuery(const string& key, Query* const query_func);
+
+		template <typename T>
+		T* getQuery(const string& name)
+		{
+			Query* query = queries.at(name);
+			return static_cast<T*>(query);
+		}
+
+		/*Query* getQuery(const string& name)
+		{
+			return queries.at(name);
+		}*/
 
 		void addPersonalContact(std::string contact);
 		void addBusinessContact(std::string contact);
@@ -77,13 +89,14 @@ namespace dms
 
 		const vector<Contact*> getContacts() const { return contacts; }
 
-		Query* getQuery();
+		
 	};
 
 	
 	class Query
 	{
-		protected string name;
+	protected: 
+		string name;
 
 		Query(const string& name) : name(name) {};
 
