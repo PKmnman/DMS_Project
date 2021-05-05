@@ -31,30 +31,30 @@ size_t TimingWheel::nextIndex(int current_slot, int server_size)
 	current_slot = (current_slot + 1) % server_size;
 }
 
-void TimingWheel::schedule(DMS& dms) {
+void TimingWheel::schedule() {
 
 	//make function fillQueue with partitions
-	Query* q = dms.getQuery();
-		queue.push(q);
+	Query* q;
+	queue.push(q);
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty
-		while(queue.front()) {
-			for (int current_slot = 0; true; nextIndex(current_slot, server_size))
-			{
-				if (ServerPing(current_slot)) {
+	while(queue.front()) {
+		for (int current_slot = 0; true; nextIndex(current_slot, server_size))
+		{
+			if (ServerPing(current_slot)) {
 
-					insert(10, int(current_slot), q);
-					queue.pop();
-				}
-				/*if (ServerPing(current_slot) is full after first loop{
-					clear_curr_slot(current_slot);
-				}*/
-				if (queue.front() = nullptr)
-				{
-					break;
-				}
-
+				insert(10, int(current_slot), q);
+				queue.pop();
 			}
+			/*if (ServerPing(current_slot) is full after first loop{
+				clear_curr_slot(current_slot);
+			}*/
+			if (queue.front() = nullptr)
+			{
+				break;
+			}
+
 		}
+	}
 }
 
 void TimingWheel::insert(int processing_time, int server_num, Partition* q)
