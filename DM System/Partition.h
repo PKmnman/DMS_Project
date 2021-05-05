@@ -27,7 +27,6 @@ public:
 	void getServer();
 	string getQuery() { cout << query << endl; }
 	void ServerPing(int server_num);
-
 };
 
 class TimingWheel 

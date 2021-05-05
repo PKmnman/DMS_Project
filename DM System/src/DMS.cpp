@@ -138,7 +138,7 @@ vector<Contact*> DisplayQuery::operator()()
 
 	cout << "Contact not found!!" << endl;
 
-	return {nullptr}
+	return { nullptr };
 }
 
 DisplayQuery displayQ = DisplayQuery("Sandra")

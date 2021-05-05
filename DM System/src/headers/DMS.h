@@ -83,9 +83,10 @@ namespace dms
 	
 	class Query
 	{
-		protected string name;
+		protected: 
+			string name;
 
-		Query(const string& name) : name(name) {};
+			Query(const string& name) : name(name) {};
 
 	public:
 
