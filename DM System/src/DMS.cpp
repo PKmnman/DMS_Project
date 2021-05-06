@@ -58,16 +58,6 @@ void DMS::addPersonalContact(std::string contact)
 	}
 }
 
-//IQuery dms::DMS::displayQuery()
-//{
-//	for (map<string,IQuery*>::const_iterator i = queries.begin();
-//		i != queries.end(); i++) 
-//	{
-//		cout << i->first << " : " << i->second << endl;
-//		return i->first, i->second;
-//	}
-//}
-
 
 void DMS::loadData(const string& filepath)
 {
