@@ -1,4 +1,3 @@
-#include "DMS.h"
 #include <fstream>
 #include <algorithm>
 #include <ranges>
@@ -6,6 +5,8 @@
 #include <sstream>
 #include <regex>
 #include <iostream>
+
+#include "DMS.h"
 
 using namespace std;
 using namespace dms;
@@ -31,13 +32,7 @@ void DMS::removeContact(string& name)
 }
 
 
-std::map<std::string&, int> dms::DMS::searchNumJohn()
-{
-	this->contacts
-}
-
-
-void DMS::registerQuery(const string& key, Query* const query_func)
+void DMS::registerQuery(const string& key, IQuery* const query_func)
 {
 	queries.insert_or_assign(key, query_func);
 }
@@ -63,9 +58,9 @@ void DMS::addPersonalContact(std::string contact)
 	}
 }
 
-//Query dms::DMS::displayQuery()
+//IQuery dms::DMS::displayQuery()
 //{
-//	for (map<string,Query*>::const_iterator i = queries.begin();
+//	for (map<string,IQuery*>::const_iterator i = queries.begin();
 //		i != queries.end(); i++) 
 //	{
 //		cout << i->first << " : " << i->second << endl;
@@ -120,21 +115,4 @@ void DMS::loadData(const string& filepath)
 		throw exception("Unrecognized input format!!");
 	}
 
-}
-
-vector<Contact*> DisplayQuery::operator()()
-{
-	for(auto contact : DMS::getDMS().getContacts())
-	{
-		if(contact->getName() == target)
-		{
-			contact->display();
-
-			return { contact };
-		}
-	}
-
-	cout << "Contact not found!!" << endl;
-
-	return {nullptr}
 }

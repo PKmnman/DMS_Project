@@ -4,6 +4,35 @@
 
 namespace dms::contact
 {
+
+	bool operator==(const Contact& c, const string& name)
+	{
+		if (c.getName().size() == name.size())
+		{
+			for (size_t i = 0; i < name.size(); i++)
+			{
+				if (c.getName().at(i) != '*' && c.getName().at(i) != name.at(i)) return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
+	bool operator==(const PhoneInfo& pn, const string& name)
+	{
+		if (name.size() != pn.getPhoneNumber().size()) return false;
+
+		string number = pn.getPhoneNumber();
+		for (size_t i = 0; i < name.size(); i++)
+		{
+			if (number.at(i) != '*' && number.at(i) != name.at(i)) return false;
+		}
+
+		return true;
+
+	}
 	
 	PhoneInfo::PhoneInfo(CSZREF phone)
 	{

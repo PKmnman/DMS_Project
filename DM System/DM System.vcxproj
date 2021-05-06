@@ -163,6 +163,7 @@
     <ClInclude Include="src\headers\DMS.h" />
     <ClInclude Include="src\headers\Menu.h" />
     <ClInclude Include="src\headers\Partition.h" />
+    <ClInclude Include="src\headers\Query.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Contact.cpp" />
@@ -170,6 +171,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Menu.cpp" />
     <ClCompile Include="src\Partition.cpp" />
+    <ClCompile Include="src\Query.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Input.txt" />

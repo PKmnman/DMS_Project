@@ -34,7 +34,7 @@ size_t TimingWheel::nextIndex(int current_slot, int server_size)
 void TimingWheel::schedule() {
 
 	//make function fillQueue with partitions
-	Query* q;
+	IQuery* q;
 	queue.push(q);
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty
 	while(queue.front()) {
@@ -70,7 +70,7 @@ void TimingWheel::insert(int processing_time, int server_num, Partition* q)
 }
 void TimingWheel::clear_curr_slot(int current_slot) 
 {
-	//the slot gets freed up of the Query object
+	//the slot gets freed up of the IQuery object
 	server[current_slot] = nullptr;
 
 }

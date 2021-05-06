@@ -12,14 +12,14 @@ namespace dms
 	{
 	protected:
 		//partition needs to have a query and a server_num as the Partitions parameters
-		Query* query;
+		IQuery* query;
 		int server_num;
 		Partition* nextp;
 	
 	
 	public:
 	
-		Partition(int server_num, Query* query) {
+		Partition(int server_num, IQuery* query) {
 			this->server_num = server_num;
 			this->query = query;
 		}
@@ -36,7 +36,7 @@ namespace dms
 	{
 	protected:	
 		//max_delay(max processing time of query);
-		queue<Query*> queue;
+		queue<IQuery*> queue;
 		static const int max_delay = 6;
 		Partition** server;
 		int server_size = sizeof(server) / sizeof(server[0]);
