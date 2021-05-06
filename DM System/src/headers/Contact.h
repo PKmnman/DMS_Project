@@ -114,6 +114,25 @@ namespace dms
 			
 			virtual void display() = 0;
 
+			const string& getStreetAddress() const
+			{
+				return street_address;
+			}
+
+			const string& getDistrict() const
+			{
+				return district;
+			}
+
+			const string& getState() const
+			{
+				return state;
+			}
+
+			const string& getZipcode() const
+			{
+				return zipcode;
+			}
 		};
 		
 		class PhoneInfo
