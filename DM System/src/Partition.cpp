@@ -1,4 +1,5 @@
 #include "Partition.h"
+#include "Query.h"
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -31,18 +32,28 @@ size_t TimingWheel::nextIndex(int current_slot, int server_size)
 	current_slot = (current_slot + 1) % server_size;
 }
 
+void Partition::fillQueue() {
+	for (int i = 0; i < sizeof(queries); i++) {
+		queue.push(queries[i]);
+	}
+	
+}
+vector<IQuery*> Partition::getQuerys() {
+	queries = dms.getQueries();
+}
+
 void TimingWheel::schedule() {
 
 	//make function fillQueue with partitions
-	IQuery* q;
-	queue.push(q);
+	Partition* p;
+	p.fillQueue();
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty
 	while(queue.front()) {
 		for (int current_slot = 0; true; nextIndex(current_slot, server_size))
 		{
 			if (ServerPing(current_slot)) {
 
-				insert(10, int(current_slot), q);
+				insert(10, int(current_slot), p = new Partition(current_slot, queue.pop()));
 				queue.pop();
 			}
 			/*if (ServerPing(current_slot) is full after first loop{

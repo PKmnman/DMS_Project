@@ -34,7 +34,7 @@ namespace dms
 	{
 		// Storage for contacts
 
-		map<string, IQuery*> queries;
+		vector<IQuery*> queries;
 
 		vector<Contact*> contacts;
 		
@@ -67,13 +67,16 @@ namespace dms
 		// Function to register a query to the DMS
 		void registerQuery(const string& key, IQuery* const query_func);
 
-		template <typename T>
+		/*template <typename T>
 		T* getQuery(const string& name)
 		{
 			IQuery* query = queries.at(name);
 			return static_cast<T*>(query);
-		}
+		}*/
 
+		vector<IQuery*> getQueries() {
+			return queries;
+		}
 
 		void addPersonalContact(std::string contact);
 		void addBusinessContact(std::string contact);
