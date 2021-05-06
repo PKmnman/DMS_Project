@@ -37,6 +37,6 @@ void display() {
 	DisplayQuery display("john");
 }
 void partition() {
-	TimingWheel peanut;
+	TimingWheel peanut(10);
 	peanut.schedule();
 }
