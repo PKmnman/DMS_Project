@@ -28,13 +28,11 @@ namespace dms
 		return { nullptr };
 	}
 
-	
-	
 
 	map<string, int> SearchQuery::generateParamNumMap()
 	{
 		map<string, int> result;
-		for (int i = 1; const auto key : QUERY_TOKENS | views::keys)
+		for (int i = 1; const auto key : paramNames)
 		{
 			result[key] = i;
 			i++;
@@ -42,6 +40,7 @@ namespace dms
 		return result;
 	}
 
+	
 	bool SearchQuery::isValidParamName(const string& param_name)
 	{
 		for(const auto& name : paramNames)
@@ -100,23 +99,23 @@ namespace dms
 			// Apply the correct function based on the parameter name
 			switch (paramMap.at(param.first))
 			{
-			case NAME_SEARCH:
-				result >> NameSearch(param.second);
+			case NAME:
+				result >> *new NameSearch(param.second);
 				break;
-			case GENDER_SEARCH:
-				result >> GenderSearch(param.second);
+			case GENDER:
+				result >> *new GenderSearch(param.second);
 				break;
-			case PHONE_SEARCH:
-				result >> PhoneSearch(param.second);
+			case PHONE_NUMBER:
+				result >> *new PhoneSearch(param.second);
 				break;
-			case EMAIL_SEARCH:
-				result >> EmailSearch(param.second);
+			case EMAIL:
+				result >> *new EmailSearch(param.second);
 				break;
-			case ADDRESS_SEARCH:
+			case ADDRESS:
 				break;
-			case STATE_SEARCH:
+			case STATE:
 				break;
-			case ZIPCODE_SEARCH:
+			case ZIPCODE:
 				break;
 			default:
 				throw exception("Invalid param type!!");
@@ -141,11 +140,22 @@ namespace dms
 	}
 
 
-	vector<contact_pt> EmailSearch::search(const vector<Contact*>& contacts)
+	vector<contact_pt> GenderSearch::search(const vector<Contact*>& contacts)
 	{
 		for (auto c : contacts)
 		{
-			if (typeid(*c) == typeid(EmailInfo) && *dynamic_cast<EmailInfo*>(c) == email)
+			if (typeid(*c) == typeid(PersonContact) && dynamic_cast<PersonContact*>(c)->getGender() == gender)
+			{
+				results.push_back(c);
+			}
+		}
+	}
+
+	vector<contact_pt> PhoneSearch::search(const vector<Contact*>& contacts)
+	{
+		for (auto c : contacts)
+		{
+			if (typeid(*c) == typeid(PhoneInfo) && dynamic_cast<PhoneInfo*>(c)->getPhoneNumber() == phone)
 			{
 				results.push_back(c);
 			}
@@ -153,6 +163,38 @@ namespace dms
 
 		return results;
 	}
+
+	vector<contact_pt> EmailSearch::search(const vector<Contact*>& contacts)
+	{
+		for (auto c : contacts)
+		{
+			if (typeid(*c) == typeid(EmailInfo) && *dynamic_cast<EmailInfo*>(c) == email) results.push_back(c);
+		}
+
+		return results;
+	}
+
+
+	vector<contact_pt> StateSearch::search(const vector<Contact*>& contacts)
+	{
+		for (auto c : contacts)
+		{
+			if (typeid(*c) == typeid(AddressInfo))
+			{
+				if(dynamic_cast<AddressInfo*>(c)->getState() == state) results.push_back(c);
+			}
+		}
+
+		return results;
+	}
 	
 	
+	SearchExpression::~SearchExpression()
+	{
+		for(int i = 0; i < results.size(); i++)
+		{
+			results[i] = nullptr;
+		}
+	}
+
 }

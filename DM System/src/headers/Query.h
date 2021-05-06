@@ -39,7 +39,6 @@ namespace dms
 
 	// A lot of complicated stuff used to evaluate search queries
 	
-	template <typename E>
 	class SearchExpression
 	{
 	protected:
@@ -52,25 +51,21 @@ namespace dms
 		{
 			results = {};
 		}
-		
-		Contact* operator[](size_t i) const { return static_cast<E const&>(*this)[i]; }
 
-		size_t size() const
-		{
-			return static_cast<E const&>(*this).size();
-		}
+		virtual ~SearchExpression();
 		
-		vector<Contact*> search(const vector<Contact*>& contacts)
-		{
-			static_cast<E const&>(*this).search(contacts);
-		}
+		virtual Contact* operator[](size_t i) const;
+
+		virtual size_t size() const { return results.size(); }
+		
+		virtual vector<Contact*> search(const vector<Contact*>& contacts) = 0;
 
 		vector<Contact*> getResults() const { return results; }
 		
 	};
 
 	
-	class SearchResult : public SearchExpression<SearchResult>
+	class SearchResult : public SearchExpression
 	{
 		
 	public:
@@ -79,16 +74,16 @@ namespace dms
 		
 		SearchResult(const vector<Contact*>& list) { results = list; }
 
-		Contact* operator[](size_t i) const { return results[i]; }
+		virtual Contact* operator[](size_t i) const { return results[i]; }
 
-		vector<Contact*> search(const vector<Contact*>& contacts)
+		virtual vector<Contact*> search(const vector<Contact*>& contacts)
 		{
 			// Don't do anything, just return the argument. This is a stub
 			return contacts;
 		}
+
 		
-		template <typename E>
-		SearchResult(SearchExpression<E> const& expr)
+		SearchResult(SearchExpression const& expr)
 		{
 			results = vector<Contact*>(expr.size());
 			
@@ -100,8 +95,29 @@ namespace dms
 		
 	};
 
+	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
+	
+	class GroupByCount
+	{
+		map<string, int> result;
+		Field targetField;
+		
+	public:
 
-	class NameSearch : public SearchExpression<NameSearch>
+		GroupByCount(Field f) : targetField(f) {}
+		
+		map<string, int> operator()(vector<Contact*> list);
+		
+	};
+
+
+	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by)
+	{
+		return group_by(expr.getResults());
+	}
+	
+
+	class NameSearch : public SearchExpression
 	{
 
 		string name;
@@ -126,7 +142,7 @@ namespace dms
 	};
 
 
-	class GenderSearch : public SearchExpression<GenderSearch>
+	class GenderSearch : public SearchExpression
 	{
 		string gender;
 
@@ -134,20 +150,11 @@ namespace dms
 
 		GenderSearch(const string& gender) : gender(gender) {}
 
-		vector<contact_pt> search(const vector<Contact*>& contacts)
-		{
-			for (auto c : contacts)
-			{
-				if (typeid(*c) == typeid(PersonContact) && dynamic_cast<PersonContact*>(c)->getGender() == gender)
-				{
-					results.push_back(c);
-				}
-			}
-		}
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
-	class PhoneSearch : public SearchExpression<PhoneSearch>
+	class PhoneSearch : public SearchExpression
 	{
 		string phone;
 
@@ -155,20 +162,11 @@ namespace dms
 
 		PhoneSearch(const string& phoneNumber) : phone(phoneNumber) {}
 
-		vector<contact_pt> search(const vector<Contact*>& contacts)
-		{
-			for (auto c : contacts)
-			{
-				if (typeid(*c) == typeid(PhoneInfo) && dynamic_cast<PhoneInfo*>(c)->getPhoneNumber() == phone)
-				{
-					results.push_back(c);
-				}
-			}
-		}
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
-	class EmailSearch : public SearchExpression<EmailSearch>
+	class EmailSearch : public SearchExpression
 	{
 		string email;
 
@@ -176,31 +174,43 @@ namespace dms
 
 		EmailSearch(const string& address) : email(address) {}
 
-		vector<contact_pt> search(const vector<Contact*>& contacts);
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
-	// Operators for handling search expressions
-	
-	template <typename T1, typename T2>
-	SearchResult operator >>(const SearchExpression<T1>& a, const SearchExpression<T2>& b)
+
+	class StateSearch : public SearchExpression
 	{
-		return SearchResult(a.results >> b);
+		string state;
+
+	public:
+
+		StateSearch(const string& state) : state(state) {}
+
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+	};
+
+	
+	// Operators for handling search expressions
+
+	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b)
+	{
+		return b.search(contacts);
+	}
+	
+	SearchResult operator >>(SearchExpression& a, SearchExpression& b)
+	{
+		return SearchResult(a.getResults() >> b);
 	}
 
 	
-	template <typename T>
-	SearchResult operator >>(SearchResult& a, const SearchExpression<T>& b)
+	SearchResult operator >>(SearchResult&& a, SearchExpression& b)
 	{
-		a = SearchResult(a.getResults() >> b);
+		a = a.getResults() >> b;
 		return a;
 	}
 
 	
-	template <typename T>
-	SearchResult operator >>(const vector<Contact*>& contacts, const SearchExpression<T>& b)
-	{
-		return b.search(contacts);
-	}
+	
 
 	// Search IQuery
 
@@ -216,7 +226,7 @@ namespace dms
 
 		SearchResult result;
 		
-		SearchResult search(const vector<pair<string, string>> parameters);
+		void search(const vector<pair<string, string>> parameters);
 
 	public:
 
@@ -233,7 +243,7 @@ namespace dms
 
 	};
 
-	vector<string> SearchQuery::paramNames = { "name", "gender", "phone", "email", "address", "state", "zipcode" };
+	vector<string> SearchQuery::paramNames = { "name", "gender", "phone", "email", "address", "state", "zipcode", "orderby"};
 
 	map<string, bool> getNewTokenTracker();
 
