@@ -4,10 +4,9 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <regex>
-#include <functional>
 
 #include "Contact.h"
+#include "Query.h"
 #include "Partition.h"
 
 namespace dms
@@ -30,13 +29,12 @@ namespace dms
 	constexpr unsigned int STATE_FIELD = 8;
 	constexpr unsigned int ZIPCODE_FIELD = 9;
 	
-	class Query;
 	
 	class DMS
 	{
 		// Storage for contacts
 
-		map<string, Query*> queries;
+		map<string, IQuery*> queries;
 
 		vector<Contact*> contacts;
 		
@@ -67,12 +65,12 @@ namespace dms
 		map<string&, int> searchNumJohn();
 		
 		// Function to register a query to the DMS
-		void registerQuery(const string& key, Query* const query_func);
+		void registerQuery(const string& key, IQuery* const query_func);
 
 		template <typename T>
 		T* getQuery(const string& name)
 		{
-			Query* query = queries.at(name);
+			IQuery* query = queries.at(name);
 			return static_cast<T*>(query);
 		}
 
@@ -88,48 +86,7 @@ namespace dms
 	};
 
 	
-	class Query
-	{
-	protected: 
-		string name;
-
-			Query(const string& name) : name(name) {};
-
-	public:
-
-		virtual vector<Contact*> operator ()();
-		
-		string getQuery(){return string();}
-
-	};
-
-
-	class SearchQuery : public Query
-	{
-	public:
-
-		virtual vector<Contact*> operator()() override;
-	};
-
 	
-	class DisplayQuery : public Query
-	{
-
-		string target;
-
-	public:
-
-		DisplayQuery() : Query("Display") {}
-
-		DisplayQuery(const string& target) : Query("Display")
-		{
-			this->target = target;
-		}
-
-		virtual vector<Contact*> operator()() override;
-
-		void setTarget(const string& newTarget) {  }
-	};
 }
 
 #endif

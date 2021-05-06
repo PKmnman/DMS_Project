@@ -31,6 +31,9 @@ namespace dms
 		};
 
 
+		bool operator==(const Contact& c, const string& name);
+		
+
 		class BusinessContact : virtual public Contact
 		{
 		protected:
@@ -146,8 +149,11 @@ namespace dms
 			int getLineNumber() const { return line_number; }
 
 			bool setPhoneNumber(CSZREF phone);
+
+			string getPhoneNumber() const { return phone_number; }
 		};
 
+		bool operator==(const PhoneInfo& c, const string& name);
 
 		class EmailInfo
 		{
@@ -174,6 +180,9 @@ namespace dms
 
 		};
 
+
+		bool operator==(const EmailInfo& c, const string& name);
+		
 
 		class WebInfo
 		{
@@ -297,7 +306,7 @@ namespace dms
 			BusinessAddressContact() : BusinessAddressContact("none", "none", "none", "none", "none", "none") {}
 		};
 
-		typedef Contact contact_t, *contactp_t;
+		typedef Contact contact_t, *contact_pt;
 
 		typedef PersonPhoneContact phone_pcontact;
 		typedef BusinessPhoneContact phone_bcontact;
