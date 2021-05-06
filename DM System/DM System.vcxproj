@@ -159,14 +159,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Partition.h" />
     <ClInclude Include="src\headers\Contact.h" />
     <ClInclude Include="src\headers\DMS.h" />
     <ClInclude Include="src\headers\Menu.h" />
     <ClInclude Include="src\headers\Partition.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Partition.cpp" />
     <ClCompile Include="src\Contact.cpp" />
     <ClCompile Include="src\DMS.cpp" />
     <ClCompile Include="src\Main.cpp" />

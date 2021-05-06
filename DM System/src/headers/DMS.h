@@ -8,7 +8,7 @@
 #include <functional>
 
 #include "Contact.h"
-
+#include "Partition.h"
 
 namespace dms
 {
@@ -76,10 +76,6 @@ namespace dms
 			return static_cast<T*>(query);
 		}
 
-		/*Query* getQuery(const string& name)
-		{
-			return queries.at(name);
-		}*/
 
 		void addPersonalContact(std::string contact);
 		void addBusinessContact(std::string contact);
@@ -88,8 +84,7 @@ namespace dms
 		void loadData(const string& filepath);
 
 		const vector<Contact*> getContacts() const { return contacts; }
-
-		
+		friend class TimingWheel;
 	};
 
 	
