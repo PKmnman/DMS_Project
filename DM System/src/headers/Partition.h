@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PARTITION_H
+#define PARTITION_H
 #include "DMS.h"
 #include <string>
 #include <queue>
@@ -62,3 +63,4 @@ namespace dms
 		size_t ServerPing(int current_slot);
 	};
 }
+#endif

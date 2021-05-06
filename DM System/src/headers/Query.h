@@ -42,7 +42,7 @@ namespace dms
 	class SearchExpression
 	{
 	protected:
-
+		// Stores the results of the expression
 		vector<Contact*> results;
 	
 	public:
@@ -54,7 +54,10 @@ namespace dms
 
 		virtual ~SearchExpression();
 		
-		virtual Contact* operator[](size_t i) const;
+		virtual Contact* operator[](size_t i) const
+		{
+			return results[i];
+		};
 
 		virtual size_t size() const { return results.size(); }
 		
@@ -96,7 +99,8 @@ namespace dms
 	};
 
 	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
-	
+
+	// Class for grouping aggregate search expressions
 	class GroupByCount
 	{
 		map<string, int> result;
@@ -104,41 +108,29 @@ namespace dms
 		
 	public:
 
-		GroupByCount(Field f) : targetField(f) {}
+		GroupByCount(int f) : targetField(Field(f)) {}
 		
 		map<string, int> operator()(vector<Contact*> list);
 		
 	};
 
 
-	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by)
-	{
-		return group_by(expr.getResults());
-	}
-	
 
 	class NameSearch : public SearchExpression
 	{
-
+		// Name to search for
 		string name;
 		
 	public:
 
 		NameSearch(const string& name) : name(name) {}
 
-		Contact* operator[](size_t i) const
+		Contact* operator[](size_t i) const override
 		{
 			return results[i];
 		}
-		
-		vector<contact_pt> search(const vector<Contact*>& contacts)
-		{
-			for(auto c : contacts)
-			{
-				if(c->getName() == name) results.push_back(c);
-			}
-		}
-		
+
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -192,31 +184,18 @@ namespace dms
 	
 	// Operators for handling search expressions
 
-	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b)
-	{
-		return b.search(contacts);
-	}
-	
-	SearchResult operator >>(SearchExpression& a, SearchExpression& b)
-	{
-		return SearchResult(a.getResults() >> b);
-	}
+	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b);
 
-	
-	SearchResult operator >>(SearchResult&& a, SearchExpression& b)
-	{
-		a = a.getResults() >> b;
-		return a;
-	}
+	SearchResult operator >>(SearchExpression& a, SearchExpression& b);
 
-	
-	
+	SearchResult operator >>(SearchResult&& a, SearchExpression& b);
 
+	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by);
+	
 	// Search IQuery
 
 	class SearchQuery : public IQuery
 	{
-		static const map<string, int> paramMap;
 
 		static vector<string> paramNames;
 
@@ -230,20 +209,16 @@ namespace dms
 
 	public:
 
-		static int getParamNum(const string& paramName);
 		static map<string, int> generateParamNumMap();
 
 		static vector<string> getParamNames() { return paramNames; }
 		static bool isValidParamName(const string& param_name);
 
-		SearchQuery(const string& search_query);
+		SearchQuery(string& search_query);
 
 		vector<Contact*> operator()() override;
-		void clearResult();
 
 	};
-
-	vector<string> SearchQuery::paramNames = { "name", "gender", "phone", "email", "address", "state", "zipcode", "orderby"};
 
 	map<string, bool> getNewTokenTracker();
 
@@ -263,7 +238,7 @@ namespace dms
 
 		virtual vector<Contact*> operator()();
 
-		void setTarget(const string& newTarget) {  }
+		void setTarget(const string& newTarget) { this->target = newTarget; }
 	};
 }
 #endif

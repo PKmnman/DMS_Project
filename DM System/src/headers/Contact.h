@@ -1,4 +1,5 @@
-#pragma once
+#ifndef DMSCONTACT_H
+#define DMSCONTACT_H
 #include <string>
 #include <regex>
 
@@ -150,8 +151,6 @@ namespace dms
 
 		public:
 
-			inline static const regex PHONE_EXPR = regex(R"(^(\d{1,3})-(\d{3})-(\d{3})-(\d{4})$)");
-
 			PhoneInfo(CSZREF phone);
 			PhoneInfo() : PhoneInfo("1-200-200-0000") {}
 
@@ -172,6 +171,7 @@ namespace dms
 			string getPhoneNumber() const { return phone_number; }
 		};
 
+		
 		bool operator==(const PhoneInfo& c, const string& name);
 
 		class EmailInfo
@@ -184,10 +184,8 @@ namespace dms
 
 		public:
 
-			inline static const regex EMAIL_EXPR = regex(R"((\w+(?:[.-_]\w+)?)@(\w+((?:.\w+)+)))");
-
 			EmailInfo(CSZREF email);
-			EmailInfo() : EmailInfo("none") {}
+			EmailInfo() : EmailInfo("none@mail.com") {}
 
 			virtual ~EmailInfo() = default;
 
@@ -199,7 +197,9 @@ namespace dms
 
 		};
 
-
+		const regex PHONE_EXPR = regex(R"(^(\d{1,3})-(\d{3})-(\d{3})-(\d{4})$)");
+		const regex EMAIL_EXPR = regex(R"((\w+(?:[.-_]\w+)?)@(\w+((?:.\w+)+)))");
+		
 		bool operator==(const EmailInfo& c, const string& name);
 		
 
@@ -341,3 +341,4 @@ namespace dms
 }
 
 namespace contact = dms::contact;
+#endif

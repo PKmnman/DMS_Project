@@ -28,7 +28,7 @@ size_t TimingWheel::ServerPing(int current_slot)
 size_t TimingWheel::nextIndex(int current_slot, int server_size)
 {
 	//looping the timewheel server array
-	current_slot = (current_slot + 1) % server_size;
+	return (current_slot + 1) % server_size;
 }
 
 void TimingWheel::schedule() {
@@ -42,7 +42,7 @@ void TimingWheel::schedule() {
 		{
 			if (ServerPing(current_slot)) {
 
-				insert(10, int(current_slot), q);
+				//insert(10, int(current_slot), q);
 				queue.pop();
 			}
 			/*if (ServerPing(current_slot) is full after first loop{

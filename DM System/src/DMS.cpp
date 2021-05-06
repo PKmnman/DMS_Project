@@ -58,6 +58,11 @@ void DMS::addPersonalContact(std::string contact)
 	}
 }
 
+void dms::DMS::addBusinessContact(std::string contact)
+{
+	// TODO: Process business conacts
+}
+
 
 void DMS::loadData(const string& filepath)
 {

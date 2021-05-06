@@ -61,8 +61,6 @@ namespace dms
 		void addContact(Contact& contact);
 
 		void removeContact(string& name);
-
-		map<string&, int> searchNumJohn();
 		
 		// Function to register a query to the DMS
 		void registerQuery(const string& key, IQuery* const query_func);

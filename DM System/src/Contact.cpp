@@ -102,6 +102,21 @@ namespace dms::contact
 		}
 	}
 
+	bool operator==(const EmailInfo& c, const string& name)
+	{
+		if (c.getAddress().size() == name.size())
+		{
+			for (size_t i = 0; i < name.size(); i++)
+			{
+				if (c.getAddress().at(i) != '*' && c.getAddress().at(i) != name.at(i)) return false;
+			}
+
+			return true;
+		}
+
+		return false;
+	}
+
 
 	void PersonEmailContact::display()
 	{

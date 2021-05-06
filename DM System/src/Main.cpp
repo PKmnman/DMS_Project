@@ -1,4 +1,3 @@
-#include "Contact.h"
 #include "DMS.h"
 #include "Partition.h"
 #include "Menu.h"
@@ -16,17 +15,19 @@ void search() {
 	cin >> in;
 
 	SearchQuery search(in);
-
 }
+
+
 void display() {
-	DMS dms;
-	dms.loadData("input.txt");
 	DisplayQuery display("john");
 }
+
+
 void partition() {
 	TimingWheel peanut(10);
 	peanut.schedule();
 }
+
 
 int main()
 {
