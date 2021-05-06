@@ -1,36 +1,42 @@
 #include "Contact.h"
 #include "DMS.h"
 #include "Partition.h"
-#include <fstream>
+#include "Menu.h"
+#include <iostream>
 
+using namespace std;
 using namespace dms;
-using namespace dms::contact;
+using namespace menu;
 
 int main()
 {
-	/*Contact* test = new BusinessWebContact("Gary Inc.", "Web Development", "www.pkstudios.com");
-	test->display();
-
-	Contact* phoneperson = new PersonPhoneContact("Gary Reeves", "Non-Binary", "12037367606");
-	phoneperson->display();
-
-	Contact* dir[6];
-
-	dir[0] = new PersonAddressContact();
-	dir[1] = new PersonPhoneContact();
-	dir[2] = new PersonEmailContact();
-	dir[3] = new BusinessAddressContact();
-	dir[4] = new BusinessPhoneContact();
-	dir[5] = new BusinessWebContact();
-
-	for (int i = 0; i < 6; i++)
-	{
-
-		dir[i]->display();
-
-	}*/
+	Menu menu;
 	DMS dms;
-	dms = DMS::getDMS();
-	//DMS::getDMS();
+	
+	menu.setTitle(":Main Menu:");
+	menu.addOption("startDMS", load);
+	menu.addOption("searchQuery", search);
+	menu.addOption("displayQuery",display);
+	menu.addOption("Partition/TimingWheel", partition);
+
+
+}
+
+void load() {
+	DMS dms;
 	dms.loadData("input.txt");
+}
+void search() {
+	DMS dms;
+	dms.loadData("input.txt");
+	dms.searchNumJohn();
+}
+void display() {
+	DMS dms;
+	dms.loadData("input.txt");
+	DisplayQuery display("john");
+}
+void partition() {
+	TimingWheel peanut;
+	peanut.schedule();
 }

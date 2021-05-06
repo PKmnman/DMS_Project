@@ -1,4 +1,6 @@
 #include "Menu.h"
+#include "DMS.h"
+#include "Partition.h"
 #include <algorithm>
 #include <functional>
 
@@ -37,3 +39,4 @@ void menu::Menu::setTitle(const string& newTitle)
 {
 	menu_title = newTitle;
 }
+
