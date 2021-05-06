@@ -24,7 +24,7 @@ namespace dms
 			this->query = query;
 		}
 		string getPartition() { 
-			cout << server_num << query->getQuery() << endl;
+			cout << server_num << query << endl;
 		
 		}
 		void getServer();

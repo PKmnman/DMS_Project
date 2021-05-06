@@ -21,32 +21,38 @@ int main()
 	menu.addOption("Partition/TimingWheel", partition);
 	cin >> input;
 	menu.select(input);
-
-
+	
+	DMS::dms;
+	dms.loadData();
+	DMS::getDMS();
 }
 
 void load() {
 	cout << "Starting DMS.." << endl;;
-	DMS dms;
-	dms.loadData("input.txt");
+	DMS dms = DMS::getDMS();
 	cout << "DMS Loaded From File" << endl;
 	main();
 }
 void search() {
 	DMS dms;
 	string in;
-	dms.loadData("input.txt");
+	dms.loadData("Input.txt");
 	cout << "Please input the name of your Search Query:" << endl;
 	cin >> in;
-	dms.getQuery(in);
+	DisplayQuery query(in);
 	
 }
 void display() {
 	DMS dms;
-	dms.loadData("input.txt");
-	DisplayQuery display("john");
+	string in;
+	dms.loadData("Input.txt");
+	cout << "Please input the name of your Query:" << endl;
+	cin >> in;
+	DisplayQuery display(in);
 }
 void partition() {
+	DMS dms;
 	TimingWheel peanut(10);
+	cout << "Starting TimeWheel" << endl;
 	peanut.schedule();
 }
