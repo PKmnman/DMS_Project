@@ -34,7 +34,7 @@ namespace menu
 
 		const string& getTitle() const { return menu_title; }
 		void setTitle(const string&);
-
+		void dmsMenu();
 	};
 
 }
