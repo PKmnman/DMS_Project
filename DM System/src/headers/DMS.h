@@ -32,22 +32,20 @@ namespace dms
 	
 	class DMS
 	{
-		// Storage for contacts
-
 		
-
 		vector<IQuery*> queries;
-
-		vector<Contact*> contacts;
 		
-		void init();
-
-	public:
+		// Storage for contacts
+		vector<Contact*> contacts;
 
 		static DMS* dms;
 		
 		DMS() = default;
 
+	public:
+
+		~DMS();
+		
 		static DMS& getDMS();
 
 		void addContact(Contact& contact);

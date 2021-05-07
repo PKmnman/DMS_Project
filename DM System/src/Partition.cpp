@@ -48,7 +48,8 @@ vector<IQuery*> TimeWheel::getQuerys() {
 
 void TimeWheel::schedule() {
 
-	TimeWheel::fillQueue();
+	fillQueue();
+	
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty if it not empty it move to the next one
 	while(queue.front()) {
 		for (int current_slot = 0; true; nextIndex(current_slot, server_size))
