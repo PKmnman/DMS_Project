@@ -31,15 +31,17 @@ namespace dms
 		
 		}
 		
+		void getQuery();
 		void getServer();
-		
+		vector<Contact*> operator()();
+
 		void ServerPing(int server_num);
 	};
 
 	class TimeWheel 
 	{
-	protected:	
-		//max_delay(max processing time of query);
+	private:
+		
 		queue<IQuery*> que;
 		vector<IQuery*> queries;
 		static const int max_delay = 6;
@@ -61,7 +63,7 @@ namespace dms
 		
 		void fillQueue();
 		vector<IQuery*> getQuerys();
-		void insert(int processing_time, int server_num, Partition* p);
+		void insert(int processing_time, size_t server_num, Partition* p);
 		void schedule();
 		void clear_curr_slot(int current_slot);
 		

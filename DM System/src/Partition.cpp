@@ -15,6 +15,7 @@ size_t TimeWheel::ServerPing(size_t& slot)
 {
 	//simulated server pinging
 	//top is unavailable, bottom is free
+	
 	if (server[slot]) 
 	{
 		
@@ -33,6 +34,12 @@ size_t TimeWheel::nextIndex(size_t& slot, int server_size)
 {
 	//looping the timewheel server array
 	return ((++slot) % server_size);
+}
+
+vector<Contact*> Partition::operator()()
+{
+	cout << "Server Number: " << server_num << " ";
+	return (*query)();
 }
 
 void TimeWheel::fillQueue() {
@@ -59,39 +66,49 @@ void TimeWheel::schedule() {
 
 	for (size_t current_slot = 0; !que.empty(); current_slot = nextIndex(current_slot, server_size-1))
 	{
-		if (ServerPing(current_slot)) {
+		//if (ServerPing(current_slot)) {
 
 			IQuery* banana = que.front();
+			//(*banana)();
 
 			insert(10, current_slot, new Partition(current_slot, banana));
 			que.pop();
-			delete banana;
 
-		}
-		//Tick for each used up slot of the wheel it clears when 10 seconds have passed;
-		for (int j = 0; j < 10; ++j)
+		//}
+		
+		//Tick for arbitrary time  it clears when 10 seconds have passed;
+		for (int j = 0; j < 9; ++j)
 		{
-			std::cout << "tick.\n" << std::flush;
+			//arbitrary query runtime
+			std::cout << "." << std::flush;
 			std::this_thread::sleep_for(10ms);
-			if (j == 9) {
-				DisplayQuery("Freya McDaniel")();
-				clear_curr_slot(current_slot);
-			}
+			
 		}
+		cout<< endl;
+
+		//when the timer breaks display the query and then clear the slot of the query;
+		(*server[current_slot])();
+	
 	
 	}
 }
 
-void TimeWheel::insert(int processing_time, int server_num, Partition* q)
+void TimeWheel::insert(int processing_time, size_t server_num, Partition* q)
 {
 	//adds a partition to the slot on the timing wheel
-	
-	server[server_num] = q;
+	if (ServerPing(server_num))
+	{
 
-	std::this_thread::sleep_for(chrono::milliseconds(processing_time));
-	cout << "Partition pushed to server: " << to_string(server_num) << endl;
+		server[server_num] = q;
 
-	
+		std::this_thread::sleep_for(chrono::milliseconds(processing_time));
+		cout << "Partition pushed to server: " << to_string(server_num) << endl;
+	}
+	else
+	{
+		clear_curr_slot(int(server_num));
+		cout << "Query Finished at slot: " << int(server_num) << endl;
+	}
 }
 
 void TimeWheel::clear_curr_slot(int current_slot) 
