@@ -70,7 +70,7 @@ int main()
 	// Load date to the DMS
 	cout << "Starting DMS..." << endl;
 	DMS::getDMS().loadData("Input.txt");
-	cout << "DMS Loaded From File" << endl;
+	cout << "DMS Loaded From File" << endl << endl;
 
 	// Add menu options
 	menu.addOption("Search the DMS", "search", search);
