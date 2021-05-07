@@ -12,17 +12,27 @@ using namespace std;
 using namespace dms;
 
 
+dms::DMS::~DMS()
+{
+	for(auto query : queries)
+	{
+		delete query;
+	}
+
+	for(auto contact: contacts)
+	{
+		delete contact;
+	}
+}
+
 DMS& DMS::getDMS()
 {
 	if (dms)
 	{
 		return *dms;
 	}
-	else
-	{
-		dms = new DMS();
-		return *dms;
-	}
+	dms = new DMS();
+	return *dms;
 }
 
 DMS* DMS::dms = nullptr;

@@ -39,6 +39,7 @@ namespace dms
 		}
 		return result;
 	}
+	
 
 	// Checks whether or not 
 	bool SearchQuery::isValidParamName(const string& param_name)
@@ -133,8 +134,6 @@ namespace dms
 			{
 				continue;
 			}
-			
-			
 		}
 	}
 
@@ -145,6 +144,7 @@ namespace dms
 		return result.getResults();
 	}
 
+	
 	map<string, bool> getNewTokenTracker()
 	{
 		map<string, bool> result;
@@ -153,12 +153,6 @@ namespace dms
 			result[expr] = false;
 		}
 		return result;
-	}
-
-
-	map<string, int> operator>>(SearchExpression& expr, GroupByCount group_by)
-	{
-		return group_by(expr.getResults());
 	}
 
 
@@ -187,12 +181,6 @@ namespace dms
 		{
 			results[i] = other[i];
 		}
-	}
-
-	
-	map<string, int> GroupByCount::operator()(vector<Contact*> list)
-	{
-		return map<string, int>();
 	}
 	
 
@@ -231,6 +219,7 @@ namespace dms
 		return results;
 	}
 
+	
 	vector<contact_pt> EmailSearch::search(const vector<Contact*>& contacts)
 	{
 		for (auto c : contacts)
@@ -252,16 +241,14 @@ namespace dms
 		return results;
 	}
 
+	
 	SearchResult operator>>(vector<Contact*>&& contacts, SearchExpression& b) { return b.search(contacts); }
 
 	SearchResult operator>>(SearchExpression& a, SearchExpression& b) { return SearchResult(a.getResults() >> b); }
 
 	SearchExpression::~SearchExpression()
 	{
-		for(int i = 0; i < results.size(); i++)
-		{
-			results[i] = nullptr;
-		}
+		for(int i = 0; i < results.size(); i++) results[i] = nullptr;
 	}
 
 }

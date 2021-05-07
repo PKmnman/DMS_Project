@@ -1,9 +1,7 @@
 #include "Menu.h"
 #include "DMS.h"
 #include "Partition.h"
-#include <algorithm>
 #include <ranges>
-#include <functional>
 
 using namespace menu;
 using namespace std;

@@ -266,7 +266,7 @@ namespace dms
 				this->zipcode = zipcode;
 			}
 
-			virtual void display();
+			void display() override;
 
 			PersonAddressContact() : PersonAddressContact("none", "none", "none", "none", "none", "none") {}
 		};
@@ -283,7 +283,7 @@ namespace dms
 				this->website = url;
 			}
 
-			virtual void display();
+			void display() override;
 
 			BusinessWebContact() : BusinessWebContact("none", "none", "none") {}
 		};
@@ -320,7 +320,7 @@ namespace dms
 				this->zipcode = zipcode;
 			}
 
-			virtual void display();
+			void display() override;
 
 			BusinessAddressContact() : BusinessAddressContact("none", "none", "none", "none", "none", "none") {}
 		};

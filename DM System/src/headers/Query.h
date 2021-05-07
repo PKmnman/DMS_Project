@@ -93,20 +93,7 @@ namespace dms
 	};
 
 	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
-
-	// Class for grouping aggregate search expressions
-	class GroupByCount
-	{
-		map<string, int> result;
-		Field targetField;
-		
-	public:
-
-		GroupByCount(int f) : targetField(static_cast<Field>(f)) {}
-		
-		map<string, int> operator()(vector<Contact*> list);
-		
-	};
+	
 
 	class NameSearch : public SearchExpression
 	{
@@ -181,8 +168,6 @@ namespace dms
 	SearchResult operator >>(SearchExpression& a, SearchExpression& b);
 
 	SearchResult operator >>(SearchResult&& a, SearchExpression& b);
-
-	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by);
 	
 	// Search IQuery
 
