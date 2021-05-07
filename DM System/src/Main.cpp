@@ -38,7 +38,7 @@ void display() {
 
 void partition() {
 	DMS dms;
-	TimingWheel peanut(10);
+	TimeWheel peanut(10);
 	cout << "Starting TimeWheel" << endl;
 	peanut.schedule();
 }

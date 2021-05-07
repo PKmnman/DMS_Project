@@ -17,7 +17,7 @@ namespace dms
 		int server_num;
 		Partition* nextp;
 		queue<IQuery*> queue;
-		vector<IQuery*> queries;
+		
 	
 	public:
 		
@@ -30,17 +30,18 @@ namespace dms
 			cout << server_num << query << endl;
 		
 		}
-		void fillQueue();
+		
 		void getServer();
-		vector<IQuery*> getQuerys();
+		
 		void ServerPing(int server_num);
 	};
 
-	class TimingWheel 
+	class TimeWheel 
 	{
 	protected:	
 		//max_delay(max processing time of query);
 		queue<IQuery*> queue;
+		vector<IQuery*> queries;
 		static const int max_delay = 6;
 		Partition** server;
 		int server_size = sizeof(server) / sizeof(server[0]);
@@ -48,7 +49,7 @@ namespace dms
 	public:
 		int current_slot;
 		
-		TimingWheel(int size)
+		TimeWheel(int size)
 		{
 			server = new Partition*[size];
 			for (int i = 0; i < size; i++) {
@@ -56,6 +57,8 @@ namespace dms
 			}
 		}
 		
+		void fillQueue();
+		vector<IQuery*> getQuerys();
 		void insert(int processing_time, int server_num, Partition* p);
 		void schedule();
 		void clear_curr_slot(int current_slot);

@@ -10,14 +10,15 @@ using namespace dms;
 
 //TODO: schedule method, Partition Queue
 
-size_t TimingWheel::ServerPing(int current_slot)
+size_t TimeWheel::ServerPing(int current_slot)
 {
 	//simulated server pinging
 	//top is unavailable, bottom is free
 	if (server[current_slot]) 
 	{
-		nextIndex(current_slot, server_size);
+		
 		cout << "server: " + current_slot << " is not available" << endl;
+		nextIndex(current_slot, server_size);
 
 	}
 	else
@@ -26,41 +27,47 @@ size_t TimingWheel::ServerPing(int current_slot)
 	}
 
 }
-size_t TimingWheel::nextIndex(int current_slot, int server_size)
+size_t TimeWheel::nextIndex(int current_slot, int server_size)
 {
 	//looping the timewheel server array
 	return (current_slot + 1) % server_size;
 }
 
-void Partition::fillQueue() {
+void TimeWheel::fillQueue() {
+	//Fill the queue with queries List
+	TimeWheel::getQuerys();
 	for (int i = 0; i < sizeof(queries); i++) {
 		queue.push(queries[i]);
 	}
 	
 }
-vector<IQuery*> Partition::getQuerys() {
-	queries = DMS::getDMS().getQueries();
-	return queries;
+vector<IQuery*> TimeWheel::getQuerys() {
+	//get Queries list from DMS
+	queries = DMS::getQueries();
 }
 
-void TimingWheel::schedule() {
+void TimeWheel::schedule() {
 
-	//make function fillQueue with partitions
-	Partition* p;
-	//a loop for an array where it pings the arbitrary server and inserts if it is empty
+	TimeWheel::fillQueue();
+	//a loop for an array where it pings the arbitrary server and inserts if it is empty if it not empty it move to the next one
 	while(queue.front()) {
 		for (int current_slot = 0; true; nextIndex(current_slot, server_size))
 		{
 			if (ServerPing(current_slot)) {
 
-				IQuery* query = queue.front();
+				insert(10, int(current_slot), p = new Partition(current_slot, queue.front()));
 				queue.pop();
 				insert(10, int(current_slot), p = new Partition(current_slot, query));
 			}
-			/*if (ServerPing(current_slot) is full after first loop{
-				clear_curr_slot(current_slot);
-			}*/
-			if (queue.front() == nullptr)
+			for (int j = 0; j < 10; ++j)
+			{
+				std::cout << "tick.\n" << std::flush;
+				std::this_thread::sleep_for(10ms);
+				if (j == 9) {
+					clear_curr_slot(current_slot);
+				}
+			}
+			if (queue.front() = nullptr)
 			{
 				break;
 			}
@@ -69,7 +76,7 @@ void TimingWheel::schedule() {
 	}
 }
 
-void TimingWheel::insert(int processing_time, int server_num, Partition* q)
+void TimeWheel::insert(int processing_time, int server_num, Partition* q)
 {
 	//adds a partition to the slot on the timing wheel
 	
@@ -80,7 +87,7 @@ void TimingWheel::insert(int processing_time, int server_num, Partition* q)
 
 	
 }
-void TimingWheel::clear_curr_slot(int current_slot) 
+void TimeWheel::clear_curr_slot(int current_slot) 
 {
 	//the slot gets freed up of the IQuery object
 	server[current_slot] = nullptr;
