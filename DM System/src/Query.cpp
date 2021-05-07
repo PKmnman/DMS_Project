@@ -52,7 +52,7 @@ namespace dms
 				tracker["PersonContact"] = true;
 			}
 
-			if (!tracker["BusinessContact"] == dynamic_cast<BusinessContact*>(c))
+			if (!tracker["BusinessContact"] && dynamic_cast<BusinessContact*>(c))
 			{
 				cout << '\t' << setw(WIDTH) << left
 					<< "Category: " << dynamic_cast<BusinessContact*>(c)->getCategory()
