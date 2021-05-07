@@ -85,7 +85,7 @@ namespace dms
 		void loadData(const string& filepath);
 
 		const vector<Contact*> getContacts() const { return contacts; }
-		friend class TimingWheel;
+		friend class TimeWheel;
 	};
 
 	
