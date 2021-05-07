@@ -71,8 +71,8 @@ namespace dms
 			{
 				const auto info = dynamic_cast<AddressInfo*>(c);
 				cout << '\t' << setw(WIDTH) << left
-					<< "Address: " << info->getStreetAddress() << "\n"
-					<< setw(WIDTH) << left << '\t' << info->getDistrict() << ", "
+					<< "Address: " << info->getStreetAddress() << "\n\t"
+					<< setw(WIDTH) << left  << info->getDistrict() << ", "
 					<< info->getState() << " " << info->getZipcode()
 					<< endl;
 			}
