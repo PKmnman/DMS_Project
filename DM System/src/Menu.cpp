@@ -28,6 +28,9 @@ void menu::Menu::select(const string& option)
 void Menu::addOption(const string& desc, const string& key, void (*action)())
 {
 	options.insert_or_assign(key, action);
+
+	temp_options.insert_or_assign(key, pair {desc, action});
+	
 	option_descs.push_back(desc);
 }
 
@@ -49,12 +52,12 @@ void menu::Menu::display()
 	<< "***********************************************\n\n"
 	<< menu_desc << endl << endl;
 	
-	auto keys = options | views::keys;
+	auto keys = temp_options | views::keys;
 	auto iter = keys.begin();
 	
 	for(auto i = 0; i < keys.size() && iter != keys.end(); i++, ++iter)
 	{
-		cout << (i + 1) << ".) " << option_descs[i] << " [" << *iter << "]" << endl;
+		cout << (i + 1) << ".) " << temp_options[*iter].first << " [" << *iter << "]" << endl;
 	}
 
 	string input;
@@ -69,7 +72,7 @@ void menu::Menu::display()
 			isRunning = false;
 			break;
 		}
-		if(!input.empty()) options[input]();
+		if(!input.empty()) temp_options[input].second();
 	}
 }
 

@@ -14,7 +14,6 @@ void search() {
 	cout << "Please input the name of your Search Query:" << endl;
 	getline(cin, in);
 	SearchQuery query(in);
-	
 
 	vector<Contact*> result = query();
 	
