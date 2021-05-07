@@ -30,9 +30,10 @@ namespace dms
 			cout << server_num << query << endl;
 		
 		}
-		
+		void getQuery();
 		void getServer();
-		
+		vector<Contact*> operator()();
+
 		void ServerPing(int server_num);
 	};
 

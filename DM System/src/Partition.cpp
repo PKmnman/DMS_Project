@@ -35,6 +35,11 @@ size_t TimeWheel::nextIndex(size_t& slot, int server_size)
 	return ((++slot) % server_size);
 }
 
+vector<Contact*> Partition::operator()()
+{
+	return (*query)();
+}
+
 void TimeWheel::fillQueue() {
 	//Fill the queue with queries List
 	vector<IQuery*> dmsQueries = DMS::getDMS().getQueries();
@@ -62,22 +67,28 @@ void TimeWheel::schedule() {
 		if (ServerPing(current_slot)) {
 
 			IQuery* banana = que.front();
+			//(*banana)();
 
 			insert(10, current_slot, new Partition(current_slot, banana));
 			que.pop();
-			delete banana;
 
 		}
 		//Tick for each used up slot of the wheel it clears when 10 seconds have passed;
-		for (int j = 0; j < 10; ++j)
+		for (int j = 0; j < 9; ++j)
 		{
+			//arbitrary query runtime
 			std::cout << "tick.\n" << std::flush;
 			std::this_thread::sleep_for(10ms);
-			if (j == 9) {
-				DisplayQuery("Freya McDaniel")();
-				clear_curr_slot(current_slot);
-			}
+			
+			//before the timer ends display the Query then clear the slot
+				
+
+			
 		}
+		
+		(*server[current_slot])();
+		clear_curr_slot(current_slot);
+		cout << "Query Finished at slot: " << current_slot << endl;
 	
 	}
 }
