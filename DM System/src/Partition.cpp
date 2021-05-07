@@ -11,15 +11,15 @@ using namespace dms;
 
 //TODO: schedule method, Partition Queue
 
-size_t TimeWheel::ServerPing(int* current_slot)
+size_t TimeWheel::ServerPing(size_t& slot)
 {
 	//simulated server pinging
 	//top is unavailable, bottom is free
-	if (server[*current_slot]) 
+	if (server[slot]) 
 	{
 		
-		cout << "server: " + *current_slot << " is not available" << endl;
-		nextIndex(current_slot, server_size);
+		cout << "server: " << slot << " is not available" << endl;
+		nextIndex(slot, server_size);
 
 	}
 	else
@@ -29,10 +29,10 @@ size_t TimeWheel::ServerPing(int* current_slot)
 
 }
 
-size_t TimeWheel::nextIndex(int* current_slot, int server_size)
+size_t TimeWheel::nextIndex(size_t& slot, int server_size)
 {
 	//looping the timewheel server array
-	return (*current_slot ++) % server_size;
+	return ((++slot) % server_size);
 }
 
 void TimeWheel::fillQueue() {
@@ -57,9 +57,9 @@ void TimeWheel::schedule() {
 	
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty if it not empty it move to the next one
 	while(que.size() != 0) {
-		for (int current_slot = 0; true; nextIndex( &current_slot, server_size-1))
+		for (size_t current_slot = 0; true; current_slot = nextIndex(current_slot, server_size-1))
 		{
-			if (ServerPing(&current_slot)) {
+			if (ServerPing(current_slot)) {
 
 				IQuery* banana = que.front();
 

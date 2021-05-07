@@ -65,8 +65,8 @@ namespace dms
 		void schedule();
 		void clear_curr_slot(int current_slot);
 		
-		size_t nextIndex(int* current_slot, int server_size);
-		size_t ServerPing(int* current_slot);
+		size_t nextIndex(size_t& slot, int server_size);
+		size_t ServerPing(size_t& slot);
 	};
 }
 #endif
