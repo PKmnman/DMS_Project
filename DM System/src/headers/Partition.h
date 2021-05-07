@@ -16,7 +16,7 @@ namespace dms
 		IQuery* query;
 		int server_num;
 		Partition* nextp;
-		queue<IQuery*> queue;
+		queue<IQuery*> que;
 		
 	
 	public:
@@ -40,11 +40,11 @@ namespace dms
 	{
 	protected:	
 		//max_delay(max processing time of query);
-		queue<IQuery*> queue;
+		queue<IQuery*> que;
 		vector<IQuery*> queries;
 		static const int max_delay = 6;
 		Partition** server;
-		int server_size = sizeof(server) / sizeof(server[0]);
+		int server_size;
 	
 	public:
 		int current_slot;
@@ -53,6 +53,7 @@ namespace dms
 		{
 			current_slot = 0;
 			server = new Partition*[size];
+			this->server_size = size;
 			for (int i = 0; i < size; i++) {
 				server[i] = nullptr;
 			}

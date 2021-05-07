@@ -55,7 +55,7 @@ namespace dms
 		void removeContact(string& name);
 		
 		// Function to register a query to the DMS
-		void registerQuery(const string& key, IQuery* const query_func);
+		void registerQuery(IQuery* const query_func);
 
 		/*template <typename T>
 		T* getQuery(const string& name)

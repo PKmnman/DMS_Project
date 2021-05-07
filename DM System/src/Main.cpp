@@ -36,9 +36,14 @@ void display() {
 
 
 void partition() {
-	DMS dms;
 	TimeWheel peanut(10);
 	cout << "Starting TimeWheel" << endl;
+	DMS::getDMS().getQueries();
+	DMS::getDMS().registerQuery(new DisplayQuery("Freya McDaniel"));
+	DMS::getDMS().registerQuery(new DisplayQuery("Jada Foster"));
+	DMS::getDMS().registerQuery(new DisplayQuery("Ruth Wilkinson"));
+	DMS::getDMS().registerQuery(new DisplayQuery("Dana White"));
+
 	peanut.schedule();
 }
 

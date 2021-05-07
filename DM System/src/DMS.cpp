@@ -11,11 +11,6 @@
 using namespace std;
 using namespace dms;
 
-void DMS::init()
-{
-	this->registerQuery("display", new DisplayQuery());
-}
-
 
 DMS& DMS::getDMS()
 {
@@ -47,7 +42,7 @@ void DMS::removeContact(string& name)
 }
 
 
-void DMS::registerQuery(const string& key, IQuery* const query_func)
+void DMS::registerQuery(IQuery* const query_func)
 {
 	queries.push_back(query_func);
 }
