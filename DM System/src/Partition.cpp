@@ -11,14 +11,14 @@ using namespace dms;
 
 //TODO: schedule method, Partition Queue
 
-size_t TimeWheel::ServerPing(int current_slot)
+size_t TimeWheel::ServerPing(int* current_slot)
 {
 	//simulated server pinging
 	//top is unavailable, bottom is free
-	if (server[current_slot]) 
+	if (server[*current_slot]) 
 	{
 		
-		cout << "server: " + current_slot << " is not available" << endl;
+		cout << "server: " + *current_slot << " is not available" << endl;
 		nextIndex(current_slot, server_size);
 
 	}
@@ -29,10 +29,10 @@ size_t TimeWheel::ServerPing(int current_slot)
 
 }
 
-size_t TimeWheel::nextIndex(int current_slot, int server_size)
+size_t TimeWheel::nextIndex(int* current_slot, int server_size)
 {
 	//looping the timewheel server array
-	return (current_slot + 1) % server_size;
+	return (*current_slot ++) % server_size;
 }
 
 void TimeWheel::fillQueue() {
@@ -56,10 +56,10 @@ void TimeWheel::schedule() {
 	fillQueue();
 	
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty if it not empty it move to the next one
-	while(!que.empty()) {
-		for (int current_slot = 0; true; nextIndex(current_slot, server_size-1))
+	while(que.size() != 0) {
+		for (int current_slot = 0; true; nextIndex( &current_slot, server_size-1))
 		{
-			if (ServerPing(current_slot)) {
+			if (ServerPing(&current_slot)) {
 
 				IQuery* banana = que.front();
 
@@ -90,7 +90,7 @@ void TimeWheel::insert(int processing_time, int server_num, Partition* q)
 	server[server_num] = q;
 
 	std::this_thread::sleep_for(chrono::milliseconds(processing_time));
-	cout << "Partition pushed to server: " + server_num << endl;
+	cout << "Partition pushed to server: " << to_string(server_num) << endl;
 
 	
 }
