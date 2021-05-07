@@ -57,7 +57,7 @@ int main()
 	// Add menu options
 	menu.addOption("Search the DMS", "search", search);
 	menu.addOption("Display a contact", "display", display);
-	menu.addOption("Perform Partition/TimingWheel Routine", "timingwheel", partition);
+	menu.addOption("Perform Partition/TimingWheel Routine", "timewheel", partition);
 
 	// Run the menu
 	menu.display();

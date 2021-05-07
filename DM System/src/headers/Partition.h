@@ -51,6 +51,7 @@ namespace dms
 		
 		TimeWheel(int size)
 		{
+			current_slot = 0;
 			server = new Partition*[size];
 			for (int i = 0; i < size; i++) {
 				server[i] = nullptr;

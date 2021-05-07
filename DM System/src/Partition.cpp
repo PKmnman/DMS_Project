@@ -27,6 +27,7 @@ size_t TimeWheel::ServerPing(int current_slot)
 	}
 
 }
+
 size_t TimeWheel::nextIndex(int current_slot, int server_size)
 {
 	//looping the timewheel server array
@@ -41,10 +42,12 @@ void TimeWheel::fillQueue() {
 	}
 	
 }
+
 vector<IQuery*> TimeWheel::getQuerys() {
 	//get Queries list from DMS
 	DMS dms;
 	queries = dms.getQueries();
+	return queries;
 }
 
 void TimeWheel::schedule() {
@@ -58,7 +61,6 @@ void TimeWheel::schedule() {
 
 				insert(10, int(current_slot), new Partition(current_slot, queue.front()));
 				queue.pop();
-				insert(10, int(current_slot), p = new Partition(current_slot, query));
 			}
 			for (int j = 0; j < 10; ++j)
 			{
@@ -68,7 +70,7 @@ void TimeWheel::schedule() {
 					clear_curr_slot(current_slot);
 				}
 			}
-			if (queue.front() = nullptr)
+			if (queue.front() == nullptr)
 			{
 				break;
 			}
@@ -88,6 +90,7 @@ void TimeWheel::insert(int processing_time, int server_num, Partition* q)
 
 	
 }
+
 void TimeWheel::clear_curr_slot(int current_slot) 
 {
 	//the slot gets freed up of the IQuery object
