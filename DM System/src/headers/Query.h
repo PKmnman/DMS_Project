@@ -87,6 +87,8 @@ namespace dms
 			// Don't do anything, just return the argument. This is a stub
 			return contacts;
 		}
+
+		void operator=(const SearchResult& other);
 		
 	};
 

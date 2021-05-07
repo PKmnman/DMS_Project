@@ -171,12 +171,25 @@ namespace dms
 		}
 	}
 
+	
 	SearchResult::SearchResult(SearchExpression const& expr)
 	{
 		results = vector<Contact*>(expr.size());
 		for (size_t i = 0; i != expr.size(); i++) results[i] = expr[i];
 	}
 
+	
+	void SearchResult::operator=(const SearchResult& other)
+	{
+		this->results = vector<Contact*>(other.getResults().size());
+
+		for(int i = 0; i < other.size(); i++)
+		{
+			results[i] = other[i];
+		}
+	}
+
+	
 	map<string, int> GroupByCount::operator()(vector<Contact*> list)
 	{
 		return map<string, int>();

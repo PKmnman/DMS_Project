@@ -45,9 +45,7 @@ void TimeWheel::fillQueue() {
 
 vector<IQuery*> TimeWheel::getQuerys() {
 	//get Queries list from DMS
-	DMS dms;
-	queries = dms.getQueries();
-	return queries;
+	return  DMS::getDMS().getQueries();
 }
 
 void TimeWheel::schedule() {

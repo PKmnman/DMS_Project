@@ -22,6 +22,8 @@ namespace menu
 		vector<string> option_descs;
 
 		bool isRunning;
+
+		map<string, pair<string, void (*)()>> temp_options;
 		
 		// Optional pointer to a parent menu
 		const Menu* parent_menu = nullptr;
