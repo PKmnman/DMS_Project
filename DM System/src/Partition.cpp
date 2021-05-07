@@ -37,7 +37,7 @@ size_t TimeWheel::nextIndex(size_t& slot, int server_size)
 
 void TimeWheel::fillQueue() {
 	//Fill the queue with queries List
-	vector<IQuery*> dmsQueries = DMS::getDMS().getQueries();;
+	vector<IQuery*> dmsQueries = DMS::getDMS().getQueries();
 	for (int i = 0; i < dmsQueries.size(); i++) {
 		
 		que.push(dmsQueries[i]);
@@ -56,30 +56,29 @@ void TimeWheel::schedule() {
 	fillQueue();
 	
 	//a loop for an array where it pings the arbitrary server and inserts if it is empty if it not empty it move to the next one
-	while(que.size() != 0) {
-		for (size_t current_slot = 0; true; current_slot = nextIndex(current_slot, server_size-1))
-		{
-			if (ServerPing(current_slot)) {
 
-				IQuery* banana = que.front();
+	for (size_t current_slot = 0; !que.empty(); current_slot = nextIndex(current_slot, server_size-1))
+	{
+		if (ServerPing(current_slot)) {
 
-				insert(10, current_slot, new Partition(current_slot, banana));
-				que.pop();
-				delete banana;
+			IQuery* banana = que.front();
 
-			}
-			//Tick for each used up slot of the wheel it clears when 10 seconds have passed;
-			for (int j = 0; j < 10; ++j)
-			{
-				std::cout << "tick.\n" << std::flush;
-				std::this_thread::sleep_for(10ms);
-				if (j == 9) {
-					DisplayQuery("Freya McDaniel")();
-					clear_curr_slot(current_slot);
-				}
-			}
-		
+			insert(10, current_slot, new Partition(current_slot, banana));
+			que.pop();
+			delete banana;
+
 		}
+		//Tick for each used up slot of the wheel it clears when 10 seconds have passed;
+		for (int j = 0; j < 10; ++j)
+		{
+			std::cout << "tick.\n" << std::flush;
+			std::this_thread::sleep_for(10ms);
+			if (j == 9) {
+				DisplayQuery("Freya McDaniel")();
+				clear_curr_slot(current_slot);
+			}
+		}
+	
 	}
 }
 
