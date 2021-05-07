@@ -8,8 +8,10 @@ using namespace std;
 
 Menu::Menu(const string& title, const string& description)
 {
-	this->menu_title = title;
+	menu_title = title;
+	menu_desc = description;
 }
+
 
 void menu::Menu::select(const string& option)
 {
@@ -47,7 +49,7 @@ void menu::Menu::display()
 {
 	cout << "***********************************************\n"
 	<< menu_title << "\n"
-	<< "***********************************************\n\n"
+	<< "***********************************************\n"
 	<< menu_desc << endl << endl;
 	
 	auto keys = temp_options | views::keys;
