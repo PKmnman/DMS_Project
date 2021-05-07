@@ -31,7 +31,13 @@ void search() {
 
 
 void display() {
-	DisplayQuery display("john");
+	string in;
+	cout << "Please input the name of the contact to display: ";
+	getline(cin, in);
+	
+	DisplayQuery display(in);
+
+	display();
 }
 
 

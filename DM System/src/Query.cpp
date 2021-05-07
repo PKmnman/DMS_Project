@@ -1,6 +1,7 @@
 #include "Query.h"
 
 #include <ranges>
+#include <iomanip>
 
 #include "DMS.h"
 #include "Contact.h"
@@ -10,22 +11,83 @@ namespace dms
 	
 	vector<Contact*> DisplayQuery::operator()()
 	{
-		for (auto contact : DMS::getDMS().getContacts())
+		vector<Contact*> matches {};
+		
+		
+		for (Contact* contact : DMS::getDMS().getContacts())
 		{
 			// Search for a contact with a matching name
 			if (contact->getName() == target)
 			{
 				// Display the first contact with a matching name
-				contact->display();
-
-				// return the displayed contact
-				return { contact };
+				matches.push_back(contact);
 			}
 		}
+
+		if(matches.empty())
+		{
+			cout << "Contact not found..." << endl;
+			return matches;
+		}
+
+		const int WIDTH = 12;
 		
-		// Yell that no contact was found and return a nullptr
-		cout << "Contact not found!!" << endl;
-		return { nullptr };
+		cout << setw(WIDTH) << right
+		<< "Name: " << matches[0]->getName() << endl;
+
+		map<string, bool> tracker {
+			{"PersonContact", false}, {"BusinessContact", false},
+			{"PhoneInfo", false}, {"AddressInfo", false},
+			{"EmailInfo", false}, {"WebInfo", false}
+		};
+		
+		for(Contact* c : matches)
+		{
+			
+			if (!tracker["PersonContact"] && dynamic_cast<PersonContact*>(c))
+			{
+				cout << '\t' << setw(WIDTH) << left
+					<< "Gender: " << dynamic_cast<PersonContact*>(c)->getGender()
+					<< endl;
+				tracker["PersonContact"] = true;
+			}
+
+			if (!tracker["BusinessContact"] == dynamic_cast<BusinessContact*>(c))
+			{
+				cout << '\t' << setw(WIDTH) << left
+					<< "Category: " << dynamic_cast<BusinessContact*>(c)->getCategory()
+					<< endl;
+				tracker["BusinessContact"] = true;
+			}
+
+			if (dynamic_cast<PhoneInfo*>(c))
+			{
+				cout << '\t' << setw(WIDTH) << left
+					<< "Phone: " << dynamic_cast<PhoneInfo*>(c)->getPhoneNumber()
+					<< endl;
+			}
+
+			if (dynamic_cast<AddressInfo*>(c))
+			{
+				const auto info = dynamic_cast<AddressInfo*>(c);
+				cout << '\t' << setw(WIDTH) << left
+					<< "Address: " << info->getStreetAddress() << "\n"
+					<< setw(WIDTH) << '\t' << info->getDistrict() << ", "
+					<< info->getState() << " " << info->getZipcode()
+					<< endl;
+			}
+
+			if (dynamic_cast<EmailInfo*>(c))
+			{
+				cout << '\t' << setw(WIDTH) << left
+					<< "Email: " << dynamic_cast<EmailInfo*>(c)->getAddress()
+					<< endl;
+			}
+			
+		}
+
+		return matches;
+		
 	}
 
 
