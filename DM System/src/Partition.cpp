@@ -43,7 +43,8 @@ void TimeWheel::fillQueue() {
 }
 vector<IQuery*> TimeWheel::getQuerys() {
 	//get Queries list from DMS
-	queries = DMS::getQueries();
+	DMS dms;
+	queries = dms.getQueries();
 }
 
 void TimeWheel::schedule() {
@@ -55,7 +56,7 @@ void TimeWheel::schedule() {
 		{
 			if (ServerPing(current_slot)) {
 
-				insert(10, int(current_slot), p = new Partition(current_slot, queue.front()));
+				insert(10, int(current_slot), new Partition(current_slot, queue.front()));
 				queue.pop();
 			}
 			for (int j = 0; j < 10; ++j)
