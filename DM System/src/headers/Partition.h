@@ -11,15 +11,16 @@ namespace dms
 {
 	class Partition
 	{
-	protected:
+	private:
 		//partition needs to have a query and a server_num as the Partitions parameters
 		IQuery* query;
 		int server_num;
 		Partition* nextp;
-	
+		queue<IQuery*> queue;
+		vector<IQuery*> queries;
 	
 	public:
-	
+		
 		Partition(int server_num, IQuery* query) {
 			this->server_num = server_num;
 			this->query = query;
@@ -29,9 +30,9 @@ namespace dms
 			cout << server_num << query << endl;
 		
 		}
-		
+		void fillQueue();
 		void getServer();
-		string getQuery() { cout << query << endl; }
+		vector<IQuery*> getQuerys();
 		void ServerPing(int server_num);
 	};
 

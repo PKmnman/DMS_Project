@@ -2,6 +2,7 @@
 #define QUERY_H
 
 #include <map>
+#include <queue>
 #include <string>
 #include <vector>
 #include <regex>
@@ -75,7 +76,9 @@ namespace dms
 
 		SearchResult() = default;
 		
-		SearchResult(const vector<Contact*>& list) { results = list; }
+		SearchResult(const vector<Contact*>& list);
+
+		SearchResult(SearchExpression const& expr);
 
 		virtual Contact* operator[](size_t i) const { return results[i]; }
 
@@ -83,17 +86,6 @@ namespace dms
 		{
 			// Don't do anything, just return the argument. This is a stub
 			return contacts;
-		}
-
-		
-		SearchResult(SearchExpression const& expr)
-		{
-			results = vector<Contact*>(expr.size());
-			
-			for (size_t i = 0; i != expr.size(); i++)
-			{
-				results[i] = expr[i];
-			}
 		}
 		
 	};
@@ -108,13 +100,11 @@ namespace dms
 		
 	public:
 
-		GroupByCount(int f) : targetField(Field(f)) {}
+		GroupByCount(int f) : targetField(static_cast<Field>(f)) {}
 		
 		map<string, int> operator()(vector<Contact*> list);
 		
 	};
-
-
 
 	class NameSearch : public SearchExpression
 	{
@@ -204,8 +194,6 @@ namespace dms
 	protected:
 
 		SearchResult result;
-		
-		void search(const vector<pair<string, string>> parameters);
 
 	public:
 
@@ -214,9 +202,13 @@ namespace dms
 		static vector<string> getParamNames() { return paramNames; }
 		static bool isValidParamName(const string& param_name);
 
-		SearchQuery(string& search_query);
+		SearchQuery(const string& search_query);
+
+		void search();
 
 		vector<Contact*> operator()() override;
+
+		vector<Contact*> getResult() { return result.getResults(); }
 
 	};
 

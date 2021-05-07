@@ -177,6 +177,36 @@ namespace dms::contact
 			"Zipcode: " << zipcode << endl;
 	}
 
+
+	ostream& operator<<(ostream& out, const Contact& c)
+	{
+		return out << c.getName();
+	}
+
+	ostream& operator<<(ostream& out, const PersonContact& c)
+	{
+		return out << static_cast<Contact const&>(c) << ", " << c.getGender();
+	}
+
+	ostream& operator<<(ostream& out, const BusinessContact& c)
+	{
+		return out;
+	}
+
+	ostream& operator<<(ostream& out, const EmailInfo& i)
+	{
+		return out;
+	}
+
+	ostream& operator<<(ostream& out, const PhoneInfo& i)
+	{
+		return out;
+	}
+
+	ostream& operator<<(ostream& out, const WebInfo& i)
+	{
+		return out;
+	}
 }
 
 

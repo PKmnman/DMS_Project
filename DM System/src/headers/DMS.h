@@ -34,7 +34,9 @@ namespace dms
 	{
 		// Storage for contacts
 
-		map<string, IQuery*> queries;
+		
+
+		vector<IQuery*> queries;
 
 		vector<Contact*> contacts;
 		
@@ -42,22 +44,12 @@ namespace dms
 
 	public:
 
-		DMS() = default;
-		static DMS& getDMS()
-		{
-			static DMS* dms;
-
-			if(dms)
-			{
-				return *dms;
-			}
-			else
-			{
-				dms = new DMS();
-				return *dms;
-			}
-		}
+		static DMS* dms;
 		
+		DMS() = default;
+
+		static DMS& getDMS();
+
 		void addContact(Contact& contact);
 
 		void removeContact(string& name);
@@ -65,13 +57,16 @@ namespace dms
 		// Function to register a query to the DMS
 		void registerQuery(const string& key, IQuery* const query_func);
 
-		template <typename T>
+		/*template <typename T>
 		T* getQuery(const string& name)
 		{
 			IQuery* query = queries.at(name);
 			return static_cast<T*>(query);
-		}
+		}*/
 
+		vector<IQuery*> getQueries() {
+			return queries;
+		}
 
 		void addPersonalContact(std::string contact);
 		void addBusinessContact(std::string contact);
@@ -79,7 +74,7 @@ namespace dms
 		// Function to load contact data from file
 		void loadData(const string& filepath);
 
-		const vector<Contact*> getContacts() const { return contacts; }
+		vector<Contact*> getContacts() const { return contacts; }
 		friend class TimingWheel;
 	};
 

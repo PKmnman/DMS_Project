@@ -69,8 +69,7 @@ void menu::Menu::display()
 			isRunning = false;
 			break;
 		}
-
-		options[input]();
+		if(!input.empty()) options[input]();
 	}
 }
 

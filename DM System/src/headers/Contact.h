@@ -336,7 +336,13 @@ namespace dms
 		typedef PersonEmailContact email_contact;
 		typedef BusinessWebContact web_contact;
 
-		
+
+		ostream& operator<<(ostream& out, const Contact& c);
+		ostream& operator<<(ostream& out, const PersonContact& c);
+		ostream& operator<<(ostream& out, const BusinessContact& c);
+		ostream& operator<<(ostream& out, const EmailInfo& i);
+		ostream& operator<<(ostream& out, const PhoneInfo& i);
+		ostream& operator<<(ostream& out, const WebInfo& i);
 	}
 }
 

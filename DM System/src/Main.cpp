@@ -12,9 +12,22 @@ void search() {
 	DMS dms = DMS::getDMS();
 	string in;
 	cout << "Please input the name of your Search Query:" << endl;
-	cin >> in;
+	getline(cin, in);
+	SearchQuery query(in);
+	
 
-	SearchQuery search(in);
+	vector<Contact*> result = query();
+	
+	if(result.empty())
+	{
+		cout << "No results found..." << endl;
+		return;
+	}
+	
+	for(auto r : result)
+	{
+		r->display();
+	}
 }
 
 
@@ -24,7 +37,9 @@ void display() {
 
 
 void partition() {
+	DMS dms;
 	TimingWheel peanut(10);
+	cout << "Starting TimeWheel" << endl;
 	peanut.schedule();
 }
 
@@ -35,9 +50,8 @@ int main()
 	Menu menu("DMS Program", "To navigate, input commands located in square brackets.\nAll commands are lowercase.");
 
 	// Load date to the DMS
-	cout << "Starting DMS..." << endl;;
-	DMS dms = DMS::getDMS();
-	dms.loadData("Input.txt");
+	cout << "Starting DMS..." << endl;
+	DMS::getDMS().loadData("Input.txt");
 	cout << "DMS Loaded From File" << endl;
 
 	// Add menu options

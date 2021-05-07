@@ -164,6 +164,7 @@
     <ClInclude Include="src\headers\Menu.h" />
     <ClInclude Include="src\headers\Partition.h" />
     <ClInclude Include="src\headers\Query.h" />
+    <ClInclude Include="src\headers\utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Contact.cpp" />
