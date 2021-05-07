@@ -32,7 +32,7 @@ namespace dms
 	map<string, int> SearchQuery::generateParamNumMap()
 	{
 		map<string, int> result;
-		for (int i = 1; const auto key : paramNames)
+		for (int i = 0; const auto key : paramNames)
 		{
 			result[key] = i;
 			i++;
@@ -40,7 +40,7 @@ namespace dms
 		return result;
 	}
 
-	
+	// Checks whether or not 
 	bool SearchQuery::isValidParamName(const string& param_name)
 	{
 		for(const auto& name : paramNames)
@@ -50,9 +50,16 @@ namespace dms
 		return false;
 	}
 
+	vector<string> SearchQuery::paramNames = { "name", "gender", "phone", "email", "address", "state", "zipcode", "orderby" };
 
 	// Constructs a search query from a parameterized query string
 	SearchQuery::SearchQuery(const string& search_query)
+	{
+		query = search_query;
+		result = DMS::getDMS().getContacts();
+	}
+
+	void SearchQuery::search()
 	{
 		smatch mr;
 		vector<pair<string, string>> parameters;
@@ -62,71 +69,80 @@ namespace dms
 
 		// Generate a number map to help evaluate which search function to use
 		map<string, int> paramMap = generateParamNumMap();
-		
+		string temp = query;
 		// Perform a regex search until we've grabbed every parameter
-		while(regex_search(search_query, mr, regex(R"(([^\s:,]*):([^:,]*))")))
+		while (regex_search(temp, mr, regex(R"(([^\s:,]+):([^:,]+))")))
 		{
-			if(isValidParamName(mr[1]))
-			{
-				// Check that we haven't already set this parameter
-				if(tracker[mr[1]]) throw exception("Search parameter set multiple times!!!");
-				
-				// Push parameter:value pair into the list of tokens
-				parameters.emplace_back(mr[0], mr[2]);
-				tracker[mr[1]] = true;
+			try {
+				if (isValidParamName(mr[1].str()))
+				{
+					// Check that we haven't already set this parameter
+					if (tracker[mr[1].str()]) throw exception("Search parameter set multiple times!!!");
+					tracker[mr[1].str()] = true;
+					// Push parameter:value pair into the list of tokens
+					parameters.emplace_back(string(mr[1]), string(mr[2]));
+
+					temp = mr.suffix();
+				}
+				else
+				{
+					throw exception("Invalid parameter token!!!");
+				}
 			}
-			else
+			catch (exception& e)
 			{
-				throw exception("Invalid parameter token!!!");
+				cerr << e.what();
 			}
-			
+
 		}
 
 		// Check that we received valid parameters
-		if(parameters.empty()) throw exception("Invalid search string!!!");
-
-		// Start with the entire DMS
-		result = DMS::getDMS().getContacts();
-			
-		search(parameters);
+		if (parameters.empty()) throw exception("Invalid search string!!!");
 		
-	}
-
-	void SearchQuery::search(const vector<pair<string, string>> parameters)
-	{
 		for (const auto& param : parameters)
 		{
-			// Apply the correct function based on the parameter name
-			switch (paramMap.at(param.first))
+			try
 			{
-			case NAME:
-				result >> *new NameSearch(param.second);
-				break;
-			case GENDER:
-				result >> *new GenderSearch(param.second);
-				break;
-			case PHONE_NUMBER:
-				result >> *new PhoneSearch(param.second);
-				break;
-			case EMAIL:
-				result >> *new EmailSearch(param.second);
-				break;
-			case ADDRESS:
-				break;
-			case STATE:
-				break;
-			case ZIPCODE:
-				break;
-			default:
-				throw exception("Invalid param type!!");
+				// Apply the correct function based on the parameter name
+				switch (paramMap.at(param.first))
+				{
+				case NAME:
+					result = result >> *new NameSearch(param.second);
+					break;
+				case GENDER:
+					result >> *new GenderSearch(param.second);
+					break;
+				case PHONE_NUMBER:
+					result >> *new PhoneSearch(param.second);
+					break;
+				case EMAIL:
+					result >> *new EmailSearch(param.second);
+					break;
+				case ADDRESS:
+					// TODO: add AddressSearch
+					break;
+				case STATE:
+					// TODO: add
+					break;
+				case ZIPCODE:
+					break;
+				default:
+					throw exception("Invalid param type!!");
+				}
+			}catch (out_of_range& e)
+			{
+				continue;
 			}
+			
+			
 		}
 	}
 
 	
 	vector<Contact*> SearchQuery::operator()()
 	{
-		return vector<Contact*>();
+		search();
+		return result.getResults();
 	}
 
 	map<string, bool> getNewTokenTracker()
@@ -140,6 +156,42 @@ namespace dms
 	}
 
 
+	map<string, int> operator>>(SearchExpression& expr, GroupByCount group_by)
+	{
+		return group_by(expr.getResults());
+	}
+
+
+	SearchResult::SearchResult(const vector<Contact*>& list)
+	{
+		results= vector<Contact*>(list.size());
+		for(int i = 0; i < list.size(); i++)
+		{
+			results[i] = list[i];
+		}
+	}
+
+	SearchResult::SearchResult(SearchExpression const& expr)
+	{
+		results = vector<Contact*>(expr.size());
+		for (size_t i = 0; i != expr.size(); i++) results[i] = expr[i];
+	}
+
+	map<string, int> GroupByCount::operator()(vector<Contact*> list)
+	{
+		return map<string, int>();
+	}
+	
+
+	vector<contact_pt> NameSearch::search(const vector<Contact*>& contacts)
+	{
+		for (auto c : contacts)
+		{
+			if (c->getName() == name) results.push_back(c);
+		}
+		return results;
+	}
+
 	vector<contact_pt> GenderSearch::search(const vector<Contact*>& contacts)
 	{
 		for (auto c : contacts)
@@ -149,6 +201,8 @@ namespace dms
 				results.push_back(c);
 			}
 		}
+
+		return results;
 	}
 
 	vector<contact_pt> PhoneSearch::search(const vector<Contact*>& contacts)
@@ -179,16 +233,16 @@ namespace dms
 	{
 		for (auto c : contacts)
 		{
-			if (typeid(*c) == typeid(AddressInfo))
-			{
-				if(dynamic_cast<AddressInfo*>(c)->getState() == state) results.push_back(c);
-			}
+			if (typeid(*c) == typeid(AddressInfo) && dynamic_cast<AddressInfo*>(c)->getState() == state) results.push_back(c);
 		}
 
 		return results;
 	}
-	
-	
+
+	SearchResult operator>>(vector<Contact*>&& contacts, SearchExpression& b) { return b.search(contacts); }
+
+	SearchResult operator>>(SearchExpression& a, SearchExpression& b) { return SearchResult(a.getResults() >> b); }
+
 	SearchExpression::~SearchExpression()
 	{
 		for(int i = 0; i < results.size(); i++)

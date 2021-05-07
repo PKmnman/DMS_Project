@@ -1,4 +1,3 @@
-#include "Contact.h"
 #include "DMS.h"
 #include "Partition.h"
 #include "Menu.h"
@@ -13,19 +12,30 @@ void search() {
 	DMS dms = DMS::getDMS();
 	string in;
 	cout << "Please input the name of your Search Query:" << endl;
-	cin >> in;
+	getline(cin, in);
+	SearchQuery query(in);
+	
 
-	SearchQuery search(in);
-
+	vector<Contact*> result = query();
+	
+	if(result.empty())
+	{
+		cout << "No results found..." << endl;
+		return;
+	}
+	
+	for(auto r : result)
+	{
+		r->display();
+	}
 }
+
+
 void display() {
-	DMS dms;
-	string in;
-	dms.loadData("Input.txt");
-	cout << "Please input the name of your Query:" << endl;
-	cin >> in;
-	DisplayQuery display(in);
+	DisplayQuery display("john");
 }
+
+
 void partition() {
 	DMS dms;
 	TimeWheel peanut(10);
@@ -33,15 +43,15 @@ void partition() {
 	peanut.schedule();
 }
 
+
 int main()
 {
 	// Create a Menu object
 	Menu menu("DMS Program", "To navigate, input commands located in square brackets.\nAll commands are lowercase.");
 
 	// Load date to the DMS
-	cout << "Starting DMS..." << endl;;
-	DMS dms = DMS::getDMS();
-	dms.loadData("Input.txt");
+	cout << "Starting DMS..." << endl;
+	DMS::getDMS().loadData("Input.txt");
 	cout << "DMS Loaded From File" << endl;
 
 	// Add menu options

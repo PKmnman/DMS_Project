@@ -17,6 +17,21 @@ void DMS::init()
 }
 
 
+DMS& DMS::getDMS()
+{
+	if (dms)
+	{
+		return *dms;
+	}
+	else
+	{
+		dms = new DMS();
+		return *dms;
+	}
+}
+
+DMS* DMS::dms = nullptr;
+
 void DMS::addContact(Contact& contact)
 {
 	contacts.push_back(&contact);
@@ -34,7 +49,7 @@ void DMS::removeContact(string& name)
 
 void DMS::registerQuery(const string& key, IQuery* const query_func)
 {
-	queries.insert_or_assign(key, query_func);
+	queries.push_back(query_func);
 }
 
 
@@ -56,6 +71,11 @@ void DMS::addPersonalContact(std::string contact)
 			match[DISTRICT_FIELD], match[STATE_FIELD], match[ZIPCODE_FIELD]
 		));
 	}
+}
+
+void dms::DMS::addBusinessContact(std::string contact)
+{
+	// TODO: Process business conacts
 }
 
 

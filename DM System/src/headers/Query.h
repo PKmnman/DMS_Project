@@ -2,6 +2,7 @@
 #define QUERY_H
 
 #include <map>
+#include <queue>
 #include <string>
 #include <vector>
 #include <regex>
@@ -42,7 +43,7 @@ namespace dms
 	class SearchExpression
 	{
 	protected:
-
+		// Stores the results of the expression
 		vector<Contact*> results;
 	
 	public:
@@ -54,7 +55,10 @@ namespace dms
 
 		virtual ~SearchExpression();
 		
-		virtual Contact* operator[](size_t i) const;
+		virtual Contact* operator[](size_t i) const
+		{
+			return results[i];
+		};
 
 		virtual size_t size() const { return results.size(); }
 		
@@ -72,7 +76,9 @@ namespace dms
 
 		SearchResult() = default;
 		
-		SearchResult(const vector<Contact*>& list) { results = list; }
+		SearchResult(const vector<Contact*>& list);
+
+		SearchResult(SearchExpression const& expr);
 
 		virtual Contact* operator[](size_t i) const { return results[i]; }
 
@@ -81,22 +87,12 @@ namespace dms
 			// Don't do anything, just return the argument. This is a stub
 			return contacts;
 		}
-
-		
-		SearchResult(SearchExpression const& expr)
-		{
-			results = vector<Contact*>(expr.size());
-			
-			for (size_t i = 0; i != expr.size(); i++)
-			{
-				results[i] = expr[i];
-			}
-		}
 		
 	};
 
 	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
-	
+
+	// Class for grouping aggregate search expressions
 	class GroupByCount
 	{
 		map<string, int> result;
@@ -104,41 +100,27 @@ namespace dms
 		
 	public:
 
-		GroupByCount(Field f) : targetField(f) {}
+		GroupByCount(int f) : targetField(static_cast<Field>(f)) {}
 		
 		map<string, int> operator()(vector<Contact*> list);
 		
 	};
 
-
-	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by)
-	{
-		return group_by(expr.getResults());
-	}
-	
-
 	class NameSearch : public SearchExpression
 	{
-
+		// Name to search for
 		string name;
 		
 	public:
 
 		NameSearch(const string& name) : name(name) {}
 
-		Contact* operator[](size_t i) const
+		Contact* operator[](size_t i) const override
 		{
 			return results[i];
 		}
-		
-		vector<contact_pt> search(const vector<Contact*>& contacts)
-		{
-			for(auto c : contacts)
-			{
-				if(c->getName() == name) results.push_back(c);
-			}
-		}
-		
+
+		vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -192,31 +174,18 @@ namespace dms
 	
 	// Operators for handling search expressions
 
-	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b)
-	{
-		return b.search(contacts);
-	}
-	
-	SearchResult operator >>(SearchExpression& a, SearchExpression& b)
-	{
-		return SearchResult(a.getResults() >> b);
-	}
+	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b);
 
-	
-	SearchResult operator >>(SearchResult&& a, SearchExpression& b)
-	{
-		a = a.getResults() >> b;
-		return a;
-	}
+	SearchResult operator >>(SearchExpression& a, SearchExpression& b);
 
-	
-	
+	SearchResult operator >>(SearchResult&& a, SearchExpression& b);
 
+	map<string, int> operator >>(SearchExpression& expr, GroupByCount group_by);
+	
 	// Search IQuery
 
 	class SearchQuery : public IQuery
 	{
-		static const map<string, int> paramMap;
 
 		static vector<string> paramNames;
 
@@ -225,12 +194,9 @@ namespace dms
 	protected:
 
 		SearchResult result;
-		
-		void search(const vector<pair<string, string>> parameters);
 
 	public:
 
-		static int getParamNum(const string& paramName);
 		static map<string, int> generateParamNumMap();
 
 		static vector<string> getParamNames() { return paramNames; }
@@ -238,12 +204,13 @@ namespace dms
 
 		SearchQuery(const string& search_query);
 
+		void search();
+
 		vector<Contact*> operator()() override;
-		void clearResult();
+
+		vector<Contact*> getResult() { return result.getResults(); }
 
 	};
-
-	vector<string> SearchQuery::paramNames = { "name", "gender", "phone", "email", "address", "state", "zipcode", "orderby"};
 
 	map<string, bool> getNewTokenTracker();
 
@@ -263,7 +230,7 @@ namespace dms
 
 		virtual vector<Contact*> operator()();
 
-		void setTarget(const string& newTarget) {  }
+		void setTarget(const string& newTarget) { this->target = newTarget; }
 	};
 }
 #endif

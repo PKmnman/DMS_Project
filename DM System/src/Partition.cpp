@@ -30,7 +30,7 @@ size_t TimeWheel::ServerPing(int current_slot)
 size_t TimeWheel::nextIndex(int current_slot, int server_size)
 {
 	//looping the timewheel server array
-	current_slot = (current_slot + 1) % server_size;
+	return (current_slot + 1) % server_size;
 }
 
 void TimeWheel::fillQueue() {
@@ -58,6 +58,7 @@ void TimeWheel::schedule() {
 
 				insert(10, int(current_slot), new Partition(current_slot, queue.front()));
 				queue.pop();
+				insert(10, int(current_slot), p = new Partition(current_slot, query));
 			}
 			for (int j = 0; j < 10; ++j)
 			{

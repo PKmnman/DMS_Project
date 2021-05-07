@@ -15,10 +15,6 @@ Menu::Menu(const string& title, const string& description)
 
 void menu::Menu::select(const string& option)
 {
-	if(option == "exit")
-	{
-		
-	}
 	if (options.contains(option))
 	{
 		auto func = options.at(option);
@@ -67,14 +63,13 @@ void menu::Menu::display()
 	while(isRunning)
 	{
 		cout << "DMS> ";
-		cin >> input;
+		getline(cin, input);
 		if(input == "exit")
 		{
 			isRunning = false;
 			break;
 		}
-
-		options[input]();
+		if(!input.empty()) options[input]();
 	}
 }
 

@@ -27,10 +27,10 @@
     <ClInclude Include="src\headers\Partition.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Partition.h">
+    <ClInclude Include="src\headers\Query.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\headers\Query.h">
+    <ClInclude Include="src\headers\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -45,9 +45,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\DMS.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Partition.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\Partition.cpp">

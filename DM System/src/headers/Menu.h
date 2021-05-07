@@ -16,7 +16,9 @@ namespace menu
 		string menu_title;
 		string menu_desc;
 
+		// Maps command strings to functions
 		map<string, void (*)()> options;
+		// Contains the strings shown to the user for each option
 		vector<string> option_descs;
 
 		bool isRunning;
@@ -32,12 +34,16 @@ namespace menu
 
 		void select(const string& option);
 
+		// Adds an option to the menu
 		void addOption(const string& desc, const string& key, void(*action)());
+
+		// Removes an option from the menu
 		void removeOption(const string& key);
 
 		const string& getTitle() const { return menu_title; }
 		void setTitle(const string&);
 
+		// Basically runs the menu, displaying options and grabbing input
 		void display();
 	};
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef PARTITION_H
+#define PARTITION_H
 #include "DMS.h"
 #include <string>
 #include <queue>
@@ -12,7 +13,6 @@ namespace dms
 	{
 	private:
 		//partition needs to have a query and a server_num as the Partitions parameters
-		DMS dms;
 		IQuery* query;
 		int server_num;
 		Partition* nextp;
@@ -67,3 +67,4 @@ namespace dms
 		size_t ServerPing(int current_slot);
 	};
 }
+#endif
