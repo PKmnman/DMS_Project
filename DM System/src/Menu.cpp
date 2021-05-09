@@ -1,12 +1,18 @@
+// Filename: Menu.cpp
+// Author: Gary Reeves
+// Date: 16/04/2021
+// Compiler Used: MSVC
+
 #include "Menu.h"
-#include "DMS.h"
-#include "Partition.h"
+#include <iomanip>
 #include <ranges>
 #include <sstream>
-#include <iomanip>
+#include "DMS.h"
+#include "Partition.h"
 
 using namespace menu;
 using namespace std;
+
 
 string MissingOptionError::format_msg(const string& menu, const string& option)
 {
@@ -16,6 +22,7 @@ string MissingOptionError::format_msg(const string& menu, const string& option)
 
 	return str.str();
 }
+
 
 string Menu::generateHeader() const
 {
@@ -36,6 +43,7 @@ string Menu::generateHeader() const
 	return str.str();
 }
 
+
 Menu::Menu(const string& title, const string& description)
 {
 	menu_title = title;
@@ -46,7 +54,7 @@ Menu::Menu(const string& title, const string& description)
 }
 
 
-void menu::Menu::select(const string& option)
+void Menu::select(const string& option)
 {
 	if (options.contains(option)) return options.at(option).second();
 
@@ -57,7 +65,7 @@ void menu::Menu::select(const string& option)
 
 void Menu::addOption(const string& desc, const string& key, void (*action)())
 {
-	options.insert_or_assign(key, pair{ desc, action });
+	options.insert_or_assign(key, pair{desc, action});
 }
 
 
@@ -69,11 +77,13 @@ void Menu::removeOption(const string& key)
 	options.erase(key);
 }
 
-void menu::Menu::setTitle(const string& newTitle)
+
+void Menu::setTitle(const string& newTitle)
 {
 	menu_title = newTitle;
 	header_block = generateHeader();
 }
+
 
 void Menu::setDescription(const string& newDesc)
 {
@@ -81,7 +91,8 @@ void Menu::setDescription(const string& newDesc)
 	header_block = generateHeader();
 }
 
-void menu::Menu::display()
+
+void Menu::display()
 {
 	// Print the menu to the console
 	cout << *this;
@@ -101,7 +112,8 @@ void menu::Menu::display()
 			break;
 		}
 
-		try {
+		try
+		{
 			select(input);
 		}
 		catch (const MissingOptionError& e)
@@ -111,6 +123,7 @@ void menu::Menu::display()
 		}
 	}
 }
+
 
 ostream& menu::operator<<(ostream& out, const Menu& menu)
 {

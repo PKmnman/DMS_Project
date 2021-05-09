@@ -1,50 +1,61 @@
-#include "DMS.h"
-#include "Partition.h"
-#include "Menu.h"
+// Filename: Main.cpp
+// Author: Gary Reeves
+// Date: 01/04/2021
+// Compiler Used: MSVC
+
 #include <iostream>
+#include "DMS.h"
+#include "Menu.h"
+#include "Partition.h"
 
 using namespace std;
 using namespace dms;
 using namespace menu;
 
 
-void search() {
-	DMS dms = DMS::getDMS();
+void search()
+{
+	// Get input
 	string in;
 	cout << "Please input the name of your Search Query:" << endl;
 	getline(cin, in);
+
+	// Construct the search query
 	SearchQuery query(in);
 
+	// Get the result
 	vector<Contact*> result = query();
-	
-	if(result.empty())
-	{
-		cout << "No results found..." << endl;
-		return;
-	}
-	
-	for(auto r : result)
-	{
-		r->display();
-	}
+
+	// Return on no results found
+	if (result.empty()) return;
+
+	// Else, call the display function for each contact
+	for (auto r : result) r->display();
 }
 
 
-void display() {
+void display()
+{
+	// Get the name of the contact to display
 	string in;
 	cout << "Please input the name of the contact to display: ";
 	getline(cin, in);
-	
+
+	// Construct the display query
 	DisplayQuery display(in);
 
+	// Perform the query on the DMS
 	display();
 }
 
 
-void partition() {
+void partition()
+{
+	// Construct a TimeWheel object
 	TimeWheel peanut(5);
 	cout << "Starting TimeWheel" << endl;
-	DMS::getDMS().getQueries();
+
+	// Populate the DMS with some queries
 	DMS::getDMS().registerQuery(new DisplayQuery("Freya McDaniel"));
 	DMS::getDMS().registerQuery(new DisplayQuery("Jada Foster"));
 	DMS::getDMS().registerQuery(new DisplayQuery("Ruth Wilkinson"));
@@ -55,7 +66,6 @@ void partition() {
 	DMS::getDMS().registerQuery(new DisplayQuery("Freya McDaniel"));
 	DMS::getDMS().registerQuery(new DisplayQuery("Freya McDaniel"));
 	DMS::getDMS().registerQuery(new DisplayQuery("Freya McDaniel"));
-
 
 
 	peanut.schedule();
@@ -79,6 +89,4 @@ int main()
 
 	// Run the menu
 	menu.display();
-
 }
-

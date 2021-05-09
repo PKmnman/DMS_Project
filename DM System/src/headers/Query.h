@@ -1,11 +1,15 @@
+// Filename: Query.h
+// Author: Gary Reeves
+// Date: 05/05/2021
+// Compiler Used: MSVC
+
 #ifndef QUERY_H
 #define QUERY_H
 
 #include <map>
-#include <queue>
+#include <regex>
 #include <string>
 #include <vector>
-#include <regex>
 
 #include "Contact.h"
 
@@ -22,94 +26,83 @@ using namespace std;
 namespace dms
 {
 	using namespace contact;
-	
+
+
+	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
+
+
 	class IQuery
 	{
 	protected:
-		
 		IQuery() = default;
 
 	public:
-
 		virtual ~IQuery() = default;
 
 		virtual vector<Contact*> operator ()() = 0;
-
 	};
 
 
-	// A lot of complicated stuff used to evaluate search queries
-	
+	// Used to evaluate each token of a search query
 	class SearchExpression
 	{
 	protected:
 		// Stores the results of the expression
 		vector<Contact*> results;
-	
-	public:
 
+	public:
 		SearchExpression()
 		{
 			results = {};
 		}
 
+
 		virtual ~SearchExpression();
-		
+
+
 		virtual Contact* operator[](size_t i) const
 		{
 			return results[i];
 		};
 
 		virtual size_t size() const { return results.size(); }
-		
+
 		virtual vector<Contact*> search(const vector<Contact*>& contacts) = 0;
 
 		vector<Contact*> getResults() const { return results; }
-		
 	};
 
-	
+
 	class SearchResult : public SearchExpression
 	{
-		
 	public:
-
 		SearchResult() = default;
-		
+
 		SearchResult(const vector<Contact*>& list);
 
-		SearchResult(SearchExpression const& expr);
+		SearchResult(const SearchExpression& expr);
 
-		virtual Contact* operator[](size_t i) const { return results[i]; }
+		virtual Contact* operator[](size_t i) const override { return results[i]; }
 
-		virtual vector<Contact*> search(const vector<Contact*>& contacts)
+		virtual vector<Contact*> search(const vector<Contact*>& contacts) override
 		{
 			// Don't do anything, just return the argument. This is a stub
 			return contacts;
 		}
 
+
 		void operator=(const SearchResult& other);
-		
 	};
 
-	enum Field : int { NAME, GENDER, PHONE_NUMBER, EMAIL, ADDRESS, STATE, ZIPCODE, CATEGORY, WEBSITE };
-	
 
 	class NameSearch : public SearchExpression
 	{
-		// Name to search for
 		string name;
-		
+
 	public:
+		NameSearch(const string& name) : name(name) { }
 
-		NameSearch(const string& name) : name(name) {}
-
-		Contact* operator[](size_t i) const override
-		{
-			return results[i];
-		}
-
-		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+		virtual vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -118,10 +111,9 @@ namespace dms
 		string gender;
 
 	public:
+		GenderSearch(const string& gender) : gender(gender) { }
 
-		GenderSearch(const string& gender) : gender(gender) {}
-
-		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+		virtual vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -130,10 +122,9 @@ namespace dms
 		string phone;
 
 	public:
+		PhoneSearch(const string& phoneNumber) : phone(phoneNumber) { }
 
-		PhoneSearch(const string& phoneNumber) : phone(phoneNumber) {}
-
-		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+		virtual vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -142,10 +133,9 @@ namespace dms
 		string email;
 
 	public:
+		EmailSearch(const string& address) : email(address) { }
 
-		EmailSearch(const string& address) : email(address) {}
-
-		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+		virtual vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
 
@@ -154,13 +144,12 @@ namespace dms
 		string state;
 
 	public:
+		StateSearch(const string& state) : state(state) { }
 
-		StateSearch(const string& state) : state(state) {}
-
-		vector<contact_pt> search(const vector<Contact*>& contacts) override;
+		virtual vector<contact_pt> search(const vector<Contact*>& contacts) override;
 	};
 
-	
+
 	// Operators for handling search expressions
 
 	SearchResult operator >>(vector<Contact*>&& contacts, SearchExpression& b);
@@ -168,22 +157,19 @@ namespace dms
 	SearchResult operator >>(SearchExpression& a, SearchExpression& b);
 
 	SearchResult operator >>(SearchResult&& a, SearchExpression& b);
-	
+
 	// Search IQuery
 
 	class SearchQuery : public IQuery
 	{
-
 		static vector<string> paramNames;
 
 		string query;
 
 	protected:
-
 		SearchResult result;
 
 	public:
-
 		static map<string, int> generateParamNumMap();
 
 		static vector<string> getParamNames() { return paramNames; }
@@ -196,26 +182,27 @@ namespace dms
 		vector<Contact*> operator()() override;
 
 		vector<Contact*> getResult() { return result.getResults(); }
-
 	};
+
 
 	map<string, bool> getNewTokenTracker();
 
 	// Display IQuery
-	
+
 	class DisplayQuery : public IQuery
 	{
 		string target;
 	public:
+		DisplayQuery() : IQuery() { }
 
-		DisplayQuery() : IQuery() {}
 
 		DisplayQuery(const string& target)
 		{
 			this->target = target;
 		}
 
-		virtual vector<Contact*> operator()();
+
+		vector<Contact*> operator()() override;
 
 		void setTarget(const string& newTarget) { this->target = newTarget; }
 	};
